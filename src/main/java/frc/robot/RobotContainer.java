@@ -1,24 +1,41 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.auto.ComplexAuto;
 import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.intake.ExtendIntake;
+import frc.robot.commands.intake.ForwardIntake;
 import frc.robot.commands.drive.HalveDriveSpeed;
+import frc.robot.commands.hopper.ForwardHopper;
+import frc.robot.commands.hopper.PulseHopper;
+import frc.robot.commands.hopper.StopHopper;
+import frc.robot.commands.indexer.ForwardIndexer;
+import frc.robot.commands.indexer.StopIndexer;
 import frc.robot.commands.intake.RetractIntake;
+import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.lift.ForwardLift;
+import frc.robot.commands.lift.ReverseLift;
+import frc.robot.commands.lift.StopLift;
+import frc.robot.commands.shooter.ForwardShooter;
+import frc.robot.commands.shooter.StopShooter;
+import frc.robot.commands.wof.ForwardWOF;
+import frc.robot.commands.wof.StopWOF;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.WOFSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -36,7 +53,8 @@ public class RobotContainer {
   private final HopperSubsystem m_hopperSubsystem = new HopperSubsystem();
   private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-
+  private final WOFSubsystem m_wofSubsystem = new WOFSubsystem();
+  private final LiftSubsystem m_liftSubsystem = new LiftSubsystem();
   // The autonomous routines
 
   // A simple auto routine that drives forward a specified distance, and then stops.
@@ -88,15 +106,38 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Grab the intake when the 'A' button is pressed.
+    // While holding the 'A' button, power Shooter
     new JoystickButton(m_driverController, Button.kA.value)
-        .whenPressed(new ExtendIntake(m_intakeSubsystem));
-    // Release the intake when the 'B' button is pressed.
-    new JoystickButton(m_driverController, Button.kB.value)
-        .whenPressed(new RetractIntake(m_intakeSubsystem));
-    // While holding the shoulder button, drive at half speed
+        .whenPressed(new ForwardShooter(m_shooterSubsystem))
+        .whenReleased(new StopShooter(m_shooterSubsystem));
+    // While holding the 'Right Bumper' button, power indexer
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-        .whenHeld(new HalveDriveSpeed(m_robotDrive));
+        .whenPressed(new ForwardIndexer(m_indexerSubsystem))
+        .whenReleased(new StopIndexer(m_indexerSubsystem));
+    // While holding the 'B' button, power hopper
+    new JoystickButton(m_driverController, Button.kB.value)
+        .whenPressed(new ForwardHopper(m_hopperSubsystem))
+        .whenReleased(new StopHopper(m_hopperSubsystem));
+    // While holding the 'X' button, power Intake
+    new JoystickButton(m_driverController, Button.kX.value)
+        .whenPressed(new ForwardIntake(m_intakeSubsystem))
+        .whenReleased(new StopIntake(m_intakeSubsystem));
+    // While holding the 'Y' button, power WOF
+    new JoystickButton(m_driverController, Button.kY.value)
+      .whenPressed(new ForwardWOF(m_wofSubsystem))
+      .whenReleased(new StopWOF(m_wofSubsystem));
+    // While holding 'Right Bumper' button, power lift
+    new JoystickButton(m_coDriverController, Button.kB.value)
+      .whenPressed(new ForwardLift(m_liftSubsystem))
+      .whenReleased(new StopLift(m_liftSubsystem));
+
+    new JoystickButton(m_coDriverController, Button.kX.value)
+      .whenPressed(new ReverseLift(m_liftSubsystem))
+      .whenReleased(new StopLift(m_liftSubsystem));
+
+    new JoystickButton(m_coDriverController, Button.kY.value)
+      .whenPressed(new PulseHopper(m_hopperSubsystem))
+      .whenReleased(new StopHopper(m_hopperSubsystem)); 
   }
 
 

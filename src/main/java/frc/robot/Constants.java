@@ -26,41 +26,41 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final int kIntakeSolenoidModule = 10;
     public static final int kIntakeSolenoidPort = 0;
-    public static final int kIntakeMotorCANPort = 0;
-    public static final double kIntakeMotorForwardSpeed = 0.5;
+    public static final int kIntakeMotorCANPort = 1; //0
+    public static final double kIntakeMotorForwardSpeed = 1.0;
     public static final double kIntakeMotorReverseSpeed = -0.5;
     public static final double kIntakeMotorStopSpeed = 0.0;
   }
 
   public static final class HopperConstants {
-    public static final int kHopperMotorCANPort = 1;
-    public static final double kHopperMotorForwardSpeed = 0.5;
-    public static final double kHopperMotorReverseSpeed = -0.5;
+    public static final int kHopperMotorCANPort = 2; //1
+    public static final double kHopperMotorForwardSpeed = 0.3;
+    public static final double kHopperMotorReverseSpeed = -0.3;
     public static final double kHopperMotorStopSpeed = 0.0;
   }
 
   public static final class IndexerConstants {
-    public static final int kIndexerMotorCANPort = 2;
-    public static final double kIndexerMotorForwardSpeed = 0.5;
+    public static final int kIndexerMotorCANPort = 0; //2
+    public static final double kIndexerMotorForwardSpeed = 1.0;
     public static final double kIndexerMotorReverseSpeed = -0.5;
     public static final double kIndexerMotorStopSpeed = 0.0;
   }
 
   public static final class ShooterConstants {
     public static final int kShooterMotorCANPort = 9;
-    public static final double kShooterMotorForwardSpeed = 0.1;
+    public static final double kShooterMotorForwardSpeed = 0.9;
     public static final double kShooterMotorReverseSpeed = -0.1;
     public static final double kShooterMotorStopSpeed = 0.0;
   }
 
   public static final class LiftConstants {
-    public static final int kLiftMotorCANPort = 3;
-    public static final double kLiftMotorForwardSpeed = 0.5;
-    public static final double kLiftMotorReverseSpeed = -0.5;
+    public static final int kLiftMotorCANPort = 4;
+    public static final double kLiftMotorForwardSpeed = 1.0;
+    public static final double kLiftMotorReverseSpeed = -1.0;
     public static final double kLiftMotorStopSpeed = 0.0;
   }
   public static final class TraverseConstants {
-    public static final int kTraverseMotorCANPort = 4;
+    public static final int kTraverseMotorCANPort = 3;
     public static final double kTraverseMotorForwardSpeed = 0.5;
     public static final double kTraverseMotorReverseSpeed = -0.5;
     public static final double kTraverseMotorStopSpeed = 0.0;

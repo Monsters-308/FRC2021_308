@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -17,7 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem(){
     m_shooterMotor.configFactoryDefault();
     m_shooterMotor.setNeutralMode(NeutralMode.Coast);
-    m_shooterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40.0, 45.0, 0.5));
+    m_shooterMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40.0, 45.0, 1.0));
+    m_shooterMotor.configOpenloopRamp(3);
     
   }
 
@@ -40,5 +43,9 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void stopShooter() {
     m_shooterMotor.set(ControlMode.PercentOutput,ShooterConstants.kShooterMotorStopSpeed);
+  }
+
+  public void updatevalues(){
+    SmartDashboard.putNumber("Current", m_shooterMotor.getStatorCurrent());
   }
 }

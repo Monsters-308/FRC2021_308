@@ -22,6 +22,10 @@ public class ForwardShooter extends CommandBase {
   public void initialize() {
     m_shooterSubsystem.forwardShooter();
   }
+  @Override
+  public void execute(){
+    m_shooterSubsystem.updatevalues();
+  }
 
   @Override
   public boolean isFinished() {
