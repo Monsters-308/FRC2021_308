@@ -34,6 +34,20 @@ public class WOFSubsystem extends SubsystemBase {
   }
 
   /**
+   * Slow Forward WOF.
+   */
+  public void slowForwardWOF() {
+    m_wofMotor.set(ControlMode.PercentOutput,WOFConstants.kWOFMotorSlowForwardSpeed);
+  }
+
+  /**
+   * Slow Reverse WOF.
+   */
+  public void slowReverseWOF() {
+    m_wofMotor.set(ControlMode.PercentOutput,WOFConstants.kWOFMotorSlowReverseSpeed);
+  }
+
+  /**
    * Stop WOF.
    */
   public void stopWOF() {

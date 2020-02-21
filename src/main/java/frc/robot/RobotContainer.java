@@ -1,41 +1,54 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.auto.ComplexAuto;
 import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveDistance;
-import frc.robot.commands.intake.ExtendIntake;
+import frc.robot.commands.drive.DriveTime;
 import frc.robot.commands.intake.ForwardIntake;
-import frc.robot.commands.drive.HalveDriveSpeed;
+import frc.robot.commands.intake.PerpetualIntake;
 import frc.robot.commands.hopper.ForwardHopper;
-import frc.robot.commands.hopper.PulseHopper;
+import frc.robot.commands.hopper.PerpetualHopper;
+import frc.robot.commands.hopper.ReverseHopper;
 import frc.robot.commands.hopper.StopHopper;
+import frc.robot.commands.indexer.AutoIndexer;
 import frc.robot.commands.indexer.ForwardIndexer;
+import frc.robot.commands.indexer.ReverseIndexer;
 import frc.robot.commands.indexer.StopIndexer;
-import frc.robot.commands.intake.RetractIntake;
+import frc.robot.commands.intake.ReverseIntake;
 import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.lift.ForwardLift;
 import frc.robot.commands.lift.ReverseLift;
 import frc.robot.commands.lift.StopLift;
-import frc.robot.commands.shooter.ForwardShooter;
+import frc.robot.commands.shooter.LongShooter;
+import frc.robot.commands.shooter.ShortShooter;
 import frc.robot.commands.shooter.StopShooter;
-import frc.robot.commands.wof.ForwardWOF;
+import frc.robot.commands.traverse.ForwardTraverse;
+import frc.robot.commands.traverse.ReverseTraverse;
+import frc.robot.commands.traverse.StopTraverse;
+import frc.robot.commands.wof.SlowForwardWOF;
+import frc.robot.commands.wof.SlowReverseWOF;
 import frc.robot.commands.wof.StopWOF;
+import frc.robot.commands.wof.WOFSpinSpecific;
+import frc.robot.commands.wof.WOFSpinThree;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TraverseSubsystem;
 import frc.robot.subsystems.WOFSubsystem;
+import frc.robot.util.JoystickPOVButton;
 import frc.robot.subsystems.IndexerSubsystem;
 
 import static edu.wpi.first.wpilibj.XboxController.Button;
@@ -55,15 +68,16 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WOFSubsystem m_wofSubsystem = new WOFSubsystem();
   private final LiftSubsystem m_liftSubsystem = new LiftSubsystem();
+  private final TraverseSubsystem m_traverseSubsystem = new TraverseSubsystem();
   // The autonomous routines
 
   // A simple auto routine that drives forward a specified distance, and then stops.
   private final Command m_simpleAuto =
-      new DriveDistance(AutoConstants.kAutoDriveDistanceInches, AutoConstants.kAutoDriveSpeed,
+      new DriveTime(AutoConstants.kAutoDriveTime, AutoConstants.kAutoDriveSpeed,
                         m_robotDrive);
 
   // A complex auto routine that drives forward, extends intake, and then drives backward.
-  private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_intakeSubsystem, m_hopperSubsystem, m_indexerSubsystem, m_shooterSubsystem);
+  private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -106,38 +120,144 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // While holding the 'A' button, power Shooter
+
+    /**************************
+     * Driver Button Commands *
+    ***************************/
+    // While holding the 'A' button, power Shooter Indexer and Hopper sequential util speed limit then index balls
     new JoystickButton(m_driverController, Button.kA.value)
-        .whenPressed(new ForwardShooter(m_shooterSubsystem))
-        .whenReleased(new StopShooter(m_shooterSubsystem));
-    // While holding the 'Right Bumper' button, power indexer
-    new JoystickButton(m_driverController, Button.kBumperRight.value)
-        .whenPressed(new ForwardIndexer(m_indexerSubsystem))
-        .whenReleased(new StopIndexer(m_indexerSubsystem));
-    // While holding the 'B' button, power hopper
-    new JoystickButton(m_driverController, Button.kB.value)
-        .whenPressed(new ForwardHopper(m_hopperSubsystem))
-        .whenReleased(new StopHopper(m_hopperSubsystem));
-    // While holding the 'X' button, power Intake
-    new JoystickButton(m_driverController, Button.kX.value)
-        .whenPressed(new ForwardIntake(m_intakeSubsystem))
-        .whenReleased(new StopIntake(m_intakeSubsystem));
-    // While holding the 'Y' button, power WOF
+        .whenPressed(
+          new SequentialCommandGroup(
+            new LongShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer
+            new ParallelCommandGroup(
+              new ForwardIndexer(m_indexerSubsystem),
+              new ForwardHopper(m_hopperSubsystem),
+              new ForwardIntake(m_intakeSubsystem)
+              )
+            )
+          )
+        .whenReleased(
+          new ParallelCommandGroup(
+            new StopShooter(m_shooterSubsystem), 
+            new StopHopper(m_hopperSubsystem),
+            new StopIndexer(m_indexerSubsystem),
+            new StopIntake(m_intakeSubsystem)
+          )
+        );
+
     new JoystickButton(m_driverController, Button.kY.value)
-      .whenPressed(new ForwardWOF(m_wofSubsystem))
-      .whenReleased(new StopWOF(m_wofSubsystem));
-    // While holding 'Right Bumper' button, power lift
+        .whenPressed(
+          new SequentialCommandGroup(
+            new ShortShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer
+            new ParallelCommandGroup(
+              new ForwardIndexer(m_indexerSubsystem),
+              new ForwardHopper(m_hopperSubsystem),
+              new ForwardIntake(m_intakeSubsystem)
+              )
+            )
+          )
+        .whenReleased(
+          new ParallelCommandGroup(
+            new StopShooter(m_shooterSubsystem), 
+            new StopHopper(m_hopperSubsystem),
+            new StopIndexer(m_indexerSubsystem),
+            new StopIntake(m_intakeSubsystem)
+          )
+        );
+
+    new JoystickPOVButton(m_driverController, JoystickPOVButton.NORTH)
+        .whenPressed(new ForwardLift(m_liftSubsystem))
+        .whenReleased(new StopLift(m_liftSubsystem));
+
+    new JoystickPOVButton(m_driverController, JoystickPOVButton.SOUTH)
+        .whenPressed(new ReverseLift(m_liftSubsystem))
+        .whenReleased(new StopLift(m_liftSubsystem));
+
+    new JoystickPOVButton(m_driverController, JoystickPOVButton.WEST)
+        .whenPressed(new ForwardTraverse(m_traverseSubsystem))
+        .whenReleased(new StopTraverse(m_traverseSubsystem));
+
+    new JoystickPOVButton(m_driverController, JoystickPOVButton.EAST)
+        .whenPressed(new ReverseTraverse(m_traverseSubsystem))
+        .whenReleased(new StopTraverse(m_traverseSubsystem));
+
+
+    //TODO Below for Auto AIM
+    // While holding the 'Right Bumper' button, For Future use for vision Aim system
+    // new JoystickButton(m_driverController, Button.kBumperRight.value)
+    //     .whenPressed(
+    //       new DriveAim(
+    //         m_robotDrive,
+    //         () -> m_driverController.getY(GenericHID.Hand.kLeft)))
+    //     .whenReleased(new DefaultDrive(m_robotDrive,
+    //       () -> m_driverController.getY(GenericHID.Hand.kLeft),
+    //       () -> m_driverController.getX(GenericHID.Hand.kRight)));
+
+    /*****************************
+     * Co Driver Button Commands *
+    ******************************/
+    // While holding the 'A' button, power hopper, indexer and Intake using auto indexer option   
+    new JoystickButton(m_coDriverController, Button.kA.value)
+        .whenPressed(
+          new SequentialCommandGroup(
+            new ParallelRaceGroup(
+              new AutoIndexer(m_indexerSubsystem,true,false),
+              new PerpetualIntake(m_intakeSubsystem),
+              new PerpetualHopper(m_hopperSubsystem)
+            ),
+            new ParallelCommandGroup(
+              new StopIndexer(m_indexerSubsystem),
+              new StopIntake(m_intakeSubsystem),
+              new StopHopper(m_hopperSubsystem)
+            )
+          )
+        )
+        .whenReleased(
+          new ParallelCommandGroup(
+            new StopHopper(m_hopperSubsystem),
+            new StopIntake(m_intakeSubsystem),
+            new StopIndexer(m_indexerSubsystem)
+          )
+        );
+
+    // While holding the 'B' button, power hopper and Intake only
     new JoystickButton(m_coDriverController, Button.kB.value)
-      .whenPressed(new ForwardLift(m_liftSubsystem))
-      .whenReleased(new StopLift(m_liftSubsystem));
+        .whenPressed(new ParallelCommandGroup( new ForwardHopper(m_hopperSubsystem), new ForwardIntake(m_intakeSubsystem)))
+        .whenReleased(new ParallelCommandGroup(new StopHopper(m_hopperSubsystem), new StopIntake(m_intakeSubsystem)));
 
-    new JoystickButton(m_coDriverController, Button.kX.value)
-      .whenPressed(new ReverseLift(m_liftSubsystem))
-      .whenReleased(new StopLift(m_liftSubsystem));
-
+    // While holding the 'Y' button, power hopper and Intake only
     new JoystickButton(m_coDriverController, Button.kY.value)
-      .whenPressed(new PulseHopper(m_hopperSubsystem))
-      .whenReleased(new StopHopper(m_hopperSubsystem)); 
+        .whenPressed(new ParallelCommandGroup( new ReverseHopper(m_hopperSubsystem), new ReverseIntake(m_intakeSubsystem)))
+        .whenReleased(new ParallelCommandGroup(new StopHopper(m_hopperSubsystem), new StopIntake(m_intakeSubsystem)));
+
+    // While holding the 'LB' button, power hopper and Intake only
+    new JoystickButton(m_coDriverController, Button.kBumperLeft.value)
+        .whenPressed(new ParallelCommandGroup( new ForwardHopper(m_hopperSubsystem), new ForwardIntake(m_intakeSubsystem),new ForwardIndexer(m_indexerSubsystem)))
+        .whenReleased(new ParallelCommandGroup(new StopHopper(m_hopperSubsystem), new StopIntake(m_intakeSubsystem),new StopIndexer(m_indexerSubsystem)));
+
+    // While holding the 'RB' button, power hopper and Intake only
+    new JoystickButton(m_coDriverController, Button.kBumperRight.value)
+        .whenPressed(new ParallelCommandGroup( new ReverseHopper(m_hopperSubsystem), new ReverseIntake(m_intakeSubsystem),new ReverseIndexer(m_indexerSubsystem)))
+        .whenReleased(new ParallelCommandGroup(new StopHopper(m_hopperSubsystem), new StopIntake(m_intakeSubsystem), new StopIndexer(m_indexerSubsystem)));
+
+
+    // TODO Finish Testing the below features
+    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.NORTH)
+        .whenPressed(new WOFSpinThree(m_wofSubsystem))
+        .whenReleased(new StopWOF(m_wofSubsystem));
+
+    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.SOUTH)
+        .whenPressed(new WOFSpinSpecific(m_wofSubsystem))
+        .whenReleased(new StopWOF(m_wofSubsystem));
+
+    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.WEST)
+        .whenPressed(new SlowForwardWOF(m_wofSubsystem))
+        .whenReleased(new StopWOF(m_wofSubsystem));
+
+    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.EAST)
+        .whenPressed(new SlowReverseWOF(m_wofSubsystem))
+        .whenReleased(new StopWOF(m_wofSubsystem));
+
   }
 
 
@@ -148,5 +268,21 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return m_chooser.getSelected();
+  }
+
+  public XboxController getDriverController(){
+    return m_driverController;
+  }
+
+  public XboxController getCoDriverController(){
+    return m_coDriverController;
+  }
+  private static RobotContainer instance;
+  public static RobotContainer getInstance(){
+    if(instance == null){
+      instance = new RobotContainer();
+
+    }
+    return instance;
   }
 }
