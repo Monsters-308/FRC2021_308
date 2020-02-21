@@ -3,7 +3,6 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.Constants.AutoConstants;
-import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.drive.DriveTime;
 import frc.robot.commands.indexer.ForwardIndexer;
 import frc.robot.commands.shooter.ShortShooter;

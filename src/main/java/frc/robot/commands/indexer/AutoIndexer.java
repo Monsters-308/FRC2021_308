@@ -46,7 +46,14 @@ public class AutoIndexer extends CommandBase {
 
   @Override
   public void initialize() {
-    m_loadingStage = IndexerStage.EMPTY;
+    if(!m_sensorBallIndexed.get() && m_sensorBallReady.get()){ // handle specil case where they could start the auto index only with one ball at the Indexed state.
+        // no we see the ball has indexed but no ball is staged
+        m_loadingStage = IndexerStage.BALL_INDEXED;
+        //send to the next stage and wait for ball present
+        m_indexerSubsystem.stopIndexer();
+    }else{
+        m_loadingStage = IndexerStage.EMPTY;
+    }
     m_complete = false;
   }
 

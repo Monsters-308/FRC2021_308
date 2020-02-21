@@ -13,7 +13,6 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.auto.ComplexAuto;
 import frc.robot.commands.drive.DefaultDrive;
-import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.drive.DriveTime;
 import frc.robot.commands.intake.ForwardIntake;
 import frc.robot.commands.intake.PerpetualIntake;

@@ -81,6 +81,7 @@ public final class Constants {
     public static final double kLiftMotorForwardSpeed = 1.0;
     public static final double kLiftMotorReverseSpeed = -1.0;
     public static final double kLiftMotorStopSpeed = 0.0;
+    public static final int kLiftSensorPort = 4;
   }
   public static final class TraverseConstants {
     public static final int kTraverseMotorCANPort = 5;
@@ -91,8 +92,8 @@ public final class Constants {
 
   public static final class WOFConstants {
     public static final int kWOFMotorCANPort = 3;
-    public static final double kWOFMotorForwardSpeed = 0.5;
-    public static final double kWOFMotorReverseSpeed = -0.5;
+    public static final double kWOFMotorForwardSpeed = 0.3;
+    public static final double kWOFMotorReverseSpeed = -0.3;
     public static final double kWOFMotorStopSpeed = 0.0;
     public static final double kWOFMotorSlowForwardSpeed = 0.1;
     public static final double kWOFMotorSlowReverseSpeed = -0.1;
