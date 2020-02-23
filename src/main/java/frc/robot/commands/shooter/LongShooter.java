@@ -13,6 +13,7 @@ import frc.robot.subsystems.ShooterSubsystem;;
 public class LongShooter extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem m_shooterSubsystem;
+  private int loopcount;
 
   public LongShooter(ShooterSubsystem subsystem) {
     m_shooterSubsystem = subsystem;
@@ -22,15 +23,17 @@ public class LongShooter extends CommandBase {
   @Override
   public void initialize() {
     m_shooterSubsystem.forwardShooter();
+    loopcount = 0;
   }
   @Override
   public void execute(){
-    m_shooterSubsystem.updatevalues();
+    if(loopcount++ % 10 == 0){
+      m_shooterSubsystem.updatevalues();
+    }
   }
 
   @Override
   public boolean isFinished() {
-    SmartDashboard.putNumber("longShootSpeed",(double)m_shooterSubsystem.getShooterVelocity());
     if((double)m_shooterSubsystem.getShooterVelocity() > Constants.ShooterConstants.kLongShotRPM){
       return true;
     }else{

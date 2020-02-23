@@ -24,12 +24,14 @@ public class ComplexAuto extends SequentialCommandGroup {
   public ComplexAuto(DriveSubsystem drive, IndexerSubsystem indexer, ShooterSubsystem shooter) {
     addCommands(
         // Drive forward the specified distance
-        new DriveTime(AutoConstants.kAutoDriveTime, AutoConstants.kAutoDriveSpeed,
-                          drive),
-
         new ShortShooter(shooter), // get up to speed
 
-        new ForwardIndexer(indexer) // run indexer
+        // new ShortShooter(shooter), // get up to speed
+
+        new ForwardIndexer(indexer), // run indexer
+        new DriveTime(AutoConstants.kAutoDriveTime, AutoConstants.kAutoDriveSpeed,
+                          drive)
+
                           );
   }
 

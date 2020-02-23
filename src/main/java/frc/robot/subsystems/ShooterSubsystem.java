@@ -76,5 +76,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void updatevalues(){
     SmartDashboard.putNumber("Current", m_shooterMotor.getStatorCurrent());
+    SmartDashboard.putNumber("Temp",m_shooterMotor.getTemperature());
+    SmartDashboard.putNumber("RPM",getShooterVelocity());
   }
 }

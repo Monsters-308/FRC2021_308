@@ -104,6 +104,7 @@ public class RobotContainer {
             () -> m_driverController.getY(GenericHID.Hand.kLeft),
             () -> m_driverController.getX(GenericHID.Hand.kRight)));
 
+    // m_shooterSubsystem.setDefaultCommand(new ShortShooter(m_shooterSubsystem));
     // Add commands to the autonomous command chooser
     m_chooser.addOption("Simple Auto", m_simpleAuto);
     m_chooser.addOption("Complex Auto", m_complexAuto);
@@ -124,7 +125,7 @@ public class RobotContainer {
      * Driver Button Commands *
     ***************************/
     // While holding the 'A' button, power Shooter Indexer and Hopper sequential util speed limit then index balls
-    new JoystickButton(m_driverController, Button.kA.value)
+    new JoystickButton(m_driverController, Button.kBumperRight.value)
         .whenPressed(
           new SequentialCommandGroup(
             new LongShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer
@@ -144,7 +145,7 @@ public class RobotContainer {
           )
         );
 
-    new JoystickButton(m_driverController, Button.kY.value)
+    new JoystickButton(m_driverController, Button.kBumperLeft.value)
         .whenPressed(
           new SequentialCommandGroup(
             new ShortShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer

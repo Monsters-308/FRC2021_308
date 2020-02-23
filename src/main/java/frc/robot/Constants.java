@@ -51,7 +51,7 @@ public final class Constants {
   public static final class IndexerConstants {
     public static final int kIndexerMotorCANPort = 0; //2
     public static final double kIndexerMotorForwardSpeed = 1.0;
-    public static final double kIndexerMotorReverseSpeed = -0.5;
+    public static final double kIndexerMotorReverseSpeed = -1.0;
     public static final double kIndexerMotorStopSpeed = 0.0;
     public static final int kShootSensorInput = 3;
     public static final int kBallIndexedSensorInput = 2;
