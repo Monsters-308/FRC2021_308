@@ -25,6 +25,7 @@ public class LongShooter extends CommandBase {
     m_shooterSubsystem.forwardShooter();
     loopcount = 0;
   }
+  
   @Override
   public void execute(){
     if(loopcount++ % 10 == 0){
