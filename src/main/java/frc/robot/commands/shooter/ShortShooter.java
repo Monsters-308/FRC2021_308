@@ -12,7 +12,6 @@ import frc.robot.subsystems.ShooterSubsystem;;
 public class ShortShooter extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem m_shooterSubsystem;
-  private int loopcount;
 
   public ShortShooter(ShooterSubsystem subsystem) {
     m_shooterSubsystem = subsystem;
@@ -22,20 +21,16 @@ public class ShortShooter extends CommandBase {
   @Override
   public void initialize() {
     m_shooterSubsystem.shortShooter();
-    loopcount = 0;
   }
 
   @Override
   public void execute(){
-    if(loopcount++ % 10 == 0){
-      m_shooterSubsystem.updatevalues();
-    }
   }
 
 
   @Override
   public boolean isFinished() {
-    if((double)m_shooterSubsystem.getShooterVelocity() > Constants.ShooterConstants.kShortShotRPM){
+    if((double)m_shooterSubsystem.getShooterVelocity() > Constants.ShooterConstants.kShortShotRPM && (double)m_shooterSubsystem.getShooterVelocity() < Constants.ShooterConstants.kShortShotRPM+500){
       return true;
     }else{
       return false;

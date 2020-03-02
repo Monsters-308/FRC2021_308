@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Random;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,7 +18,11 @@ public class LEDSubsystem extends SubsystemBase {
   private int m_rainbowFirstPixelHue;
   private int redPulseBrightness = 0;
   private int redStreakLED = 0;
+  private int greenStreakLED = 0;
+  private int blueStreakLED = 0;
   private int numLoops = 0;
+  private int m_led_mode_state = 1; // used for loop modes of the led's
+  private int led_loop_count = 0; // used for loop modes of the led's
   
   public LEDSubsystem() {
     // Must be a PWM header, not MXP or DIO
@@ -38,7 +44,81 @@ public class LEDSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // Fill the buffer with a rainbow
 
+    // here we will create a state system to have the external command system opperate new states
+    switch(m_led_mode_state){
+      case 1: // rainbow
+        rainbow();
+        break;
+      case 2: // frenzy
+        Random rand = new Random();
+        if(led_loop_count++ % 10 == 0){
+          frenzy(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+
+        }
+        break;
+      case 3: // red
+        red();
+        break;
+      case 4: // green
+        green();
+        break;
+      case 5: // blue
+        blue();
+        break;
+      case 6: //purple
+        purple();
+        break;
+      case 7: // redPulse
+        redPulse();
+        break;
+      case 8: // redstreak
+        redStreak();
+        break;
+      case 9: // greenstreak
+        greenStreak();
+        break;
+      case 10: // bluestreak
+        blueStreak();
+        break;
+      case 0: // do nothing
+        break;
+      default:// do nothing
+        break;
+    }
   }
+
+  public void setRainbow(){
+    m_led_mode_state = 1;
+  }
+
+  public void setFrenzy(){
+    m_led_mode_state = 2;
+  }
+
+  public void setRed(){
+    m_led_mode_state = 3;
+  }  
+  public void setGreen(){
+    m_led_mode_state = 4;
+  }  
+  public void setBlue(){
+    m_led_mode_state = 5;
+  }  
+  public void setPurple(){
+    m_led_mode_state = 6;
+  }  
+  public void setRedPulse(){
+    m_led_mode_state = 7;
+  }  
+  public void setRedStreak(){
+    m_led_mode_state = 8;
+  }  
+  public void setGreenStreak(){
+    m_led_mode_state = 9;
+  }  
+  public void setBlueStreak(){
+    m_led_mode_state = 10;
+  }  
 
   public void rainbow() {
     // For every pixel
@@ -53,6 +133,15 @@ public class LEDSubsystem extends SubsystemBase {
     m_rainbowFirstPixelHue += 3;
     // Check bounds
     m_rainbowFirstPixelHue %= 180;
+
+    m_led.setData(m_ledBuffer);
+  }
+
+  public void frenzy(int rcolor, int gcolor, int bcolor) {
+    // For every pixel
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setRGB(i, rcolor, gcolor, bcolor);
+    }
 
     m_led.setData(m_ledBuffer);
   }
@@ -131,7 +220,54 @@ public class LEDSubsystem extends SubsystemBase {
 
   }
 
+  public void greenStreak(){
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the RGB values for blue
+      m_ledBuffer.setRGB(i, 0, 255, 0);
+   }
+
+   //turns one led off
+   m_ledBuffer.setRGB(greenStreakLED, 0, 0, 0);
+
+   //increase brightness
+   if (numLoops%3 == 0){
+      greenStreakLED += 1;
+      //Check bounds
+      greenStreakLED %= m_ledBuffer.getLength();
+    }
+
+   m_led.setData(m_ledBuffer);
+
+
+   numLoops += 1;
+
+  }
+
+  public void blueStreak(){
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the RGB values for blue
+      m_ledBuffer.setRGB(i, 0, 0, 255);
+   }
+
+   //turns one led off
+   m_ledBuffer.setRGB(blueStreakLED, 0, 0, 0);
+
+   //increase brightness
+   if (numLoops%3 == 0){
+      blueStreakLED += 1;
+      //Check bounds
+      blueStreakLED %= m_ledBuffer.getLength();
+    }
+
+   m_led.setData(m_ledBuffer);
+
+
+   numLoops += 1;
+
+  }
+
   public void clearAll(){
+    m_led_mode_state = 0;
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
         // Sets the specified LED to the RGB values for purple
         m_ledBuffer.setRGB(i, 0, 0, 0);

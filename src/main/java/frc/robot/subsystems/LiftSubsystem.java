@@ -26,7 +26,11 @@ public class LiftSubsystem extends SubsystemBase {
    * Forward Lift.
    */
   public void forwardLift() {
-    m_liftMotor.set(ControlMode.PercentOutput,LiftConstants.kLiftMotorForwardSpeed);
+    if(m_liftLimit.get()){
+      m_liftMotor.set(ControlMode.PercentOutput,LiftConstants.kLiftMotorForwardSpeed);
+    }else{
+      m_liftMotor.set(ControlMode.PercentOutput, LiftConstants.kLiftMotorStopSpeed);
+    }
   }
 
   /**
@@ -43,13 +47,14 @@ public class LiftSubsystem extends SubsystemBase {
     m_liftMotor.set(ControlMode.PercentOutput,LiftConstants.kLiftMotorStopSpeed);
   }
 
-  public void updateValues(boolean limit){
-    SmartDashboard.putBoolean("Lift Limit", m_liftLimit.get());
-  }
 
   public boolean getLimitSwitch(){
     return m_liftLimit.get();
   }
 
+  @Override
+  public void periodic(){
+    SmartDashboard.putBoolean("Lift Limit", m_liftLimit.get());
+  }  
 
 }

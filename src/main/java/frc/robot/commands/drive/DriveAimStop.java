@@ -7,15 +7,12 @@
 
 package frc.robot.commands.drive;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 
-public class DriveAim extends CommandBase {
+public class DriveAimStop extends CommandBase {
   private final DriveSubsystem m_drive;
-  private final DoubleSupplier m_forward;
   // private double m_targetYawError;
   private double KpRot = -0.1;
   private double rotationError;
@@ -26,8 +23,7 @@ public class DriveAim extends CommandBase {
   /**
    * Creates a new DriveAim.
    */
-  public DriveAim(DriveSubsystem subsystem, DoubleSupplier forward) {
-    m_forward = forward;
+  public DriveAimStop(DriveSubsystem subsystem) {
     m_drive = subsystem;
     addRequirements(m_drive);
   }
@@ -42,24 +38,6 @@ public class DriveAim extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rotationAdjust = 0;
-    rotationError = m_drive.getVisionYaw();
-    if(rotationError > angleTolerance){
-      rotationAdjust = KpRot*rotationError+constantForce;
-    }else{
-      if(rotationError < angleTolerance){
-        rotationAdjust = KpRot*rotationError-constantForce;
-      }
-    }
-    if(rotationAdjust > 0.3){
-      rotationAdjust = 0.3;
-    }
-    if(rotationAdjust < -0.3){
-      rotationAdjust = -0.3;
-    }
-
-    m_drive.arcadeDrive(m_forward.getAsDouble()/-1.05,rotationAdjust);
-
   }
 
 
@@ -73,6 +51,28 @@ public class DriveAim extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    rotationAdjust = 0;
+    rotationError = m_drive.getVisionYaw();
+    if(rotationError > angleTolerance){
+      rotationAdjust = KpRot*rotationError+constantForce;
+    }else{
+      if(rotationError < -angleTolerance){
+        rotationAdjust = KpRot*rotationError-constantForce;
+      }
+    }
+    if(rotationAdjust > 0.3){
+      rotationAdjust = 0.3;
+    }
+    if(rotationAdjust < -0.3){
+      rotationAdjust = -0.3;
+    }
+
+    if(Math.abs(rotationError)<angleTolerance){
+        m_drive.arcadeDrive(0.0,0.0);
+        return true;
+    }else{
+        m_drive.arcadeDrive(0.0,rotationAdjust);
+        return false;    
+    }
   }
 }

@@ -1,9 +1,16 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 import com.revrobotics.CANSparkMax;
@@ -31,6 +38,17 @@ public class DriveSubsystem extends SubsystemBase {
   // The right-side drive encoder
   private final CANEncoder m_rightEncoder = m_rightFront.getEncoder();
 
+  // The Gyro
+  private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+
+  private final Solenoid m_visionSolenoid = new Solenoid(Constants.DriveConstants.kLEDRingModule,Constants.DriveConstants.kLEDRingPort);
+
+  private final NetworkTable m_visionTable;
+  private final NetworkTableEntry m_visionYaw;
+  private final NetworkTableEntry m_isDriverMode;
+  private final NetworkTableEntry m_isValid;
+  private final NetworkTableEntry m_pose;
+ 
   /**
    * Creates a new DriveSubsystem.
    */
@@ -49,6 +67,14 @@ public class DriveSubsystem extends SubsystemBase {
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    m_visionTable = NetworkTableInstance.getDefault().getTable("chameleon-vision").getSubTable("MyCamName");
+    m_visionYaw = m_visionTable.getEntry("yaw");
+    m_isDriverMode = m_visionTable.getEntry("driver_mode");
+    m_isValid = m_visionTable.getEntry("is_Valid");
+    m_pose = m_visionTable.getEntry("poseList");
+
+    m_isDriverMode.setBoolean(true);//set the driver mode
+    m_gyro.calibrate();
   }
 
   /**
@@ -104,4 +130,51 @@ public class DriveSubsystem extends SubsystemBase {
   public void setMaxOutput(double maxOutput) {
     m_drive.setMaxOutput(maxOutput);
   }
+
+  public void setLedState(boolean state){
+    m_visionSolenoid.set(state);
+  }
+
+  public double getVisionYaw(){
+    return m_visionYaw.getDouble(0.0);
+  }
+
+  public boolean isValid(){
+    return m_isValid.getBoolean(false);
+  }
+
+  public double getVisonPose(){
+    double[] retval = {0.0,0.0,0,0};
+    retval = m_pose.getDoubleArray(retval);
+    return retval[0];
+  }
+
+  public void setDriverMode(boolean state){
+    m_isDriverMode.setBoolean(state);
+  }
+
+  public double getGyroHeading(){
+    return m_gyro.getAngle();
+  }
+
+  public void resetGyro(){
+    m_gyro.reset();
+  }
+
+  @Override
+  public void periodic(){
+    // here is a place to send to the smartdashboard
+    SmartDashboard.putNumber("LeftEncoder",m_leftEncoder.getPosition());
+    SmartDashboard.putNumber("LeftVelocity",m_leftEncoder.getVelocity());
+    SmartDashboard.putNumber("RightEncoder",m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("RightVelocity",m_rightEncoder.getVelocity());
+
+    SmartDashboard.putNumber("VisionYaw",m_visionYaw.getDouble(0.0));
+    SmartDashboard.putBoolean("VisionValid",m_isValid.getBoolean(false));
+    SmartDashboard.putNumber("VisionPose",getVisonPose());
+    
+    SmartDashboard.putNumber("GyroHeading",m_gyro.getAngle());
+  }
+
+
 }

@@ -39,6 +39,7 @@ public class DriveTime extends CommandBase {
   @Override
   public boolean isFinished() {
       if(Timer.getFPGATimestamp() < m_getFPGATimestamp + m_time){
+        m_drive.arcadeDrive(m_speed, 0);
         return false;
       }else{
         return true;

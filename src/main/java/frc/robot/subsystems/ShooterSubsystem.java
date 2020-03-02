@@ -74,7 +74,9 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterMotor.set(ControlMode.PercentOutput,ShooterConstants.kShooterMotorStopSpeed);
   }
 
-  public void updatevalues(){
+  @Override
+  public void periodic(){
+    //TODO add a loop counter in here
     SmartDashboard.putNumber("Current", m_shooterMotor.getStatorCurrent());
     SmartDashboard.putNumber("Temp",m_shooterMotor.getTemperature());
     SmartDashboard.putNumber("RPM",getShooterVelocity());
