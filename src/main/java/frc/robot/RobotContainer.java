@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.auto.AutoFarTrench;
+import frc.robot.commands.auto.AutoNearTrench;
 import frc.robot.commands.auto.ComplexAuto;
 import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveAim;
@@ -83,7 +85,9 @@ public class RobotContainer {
       new DriveDistance(10,0.3,m_robotDrive);
 
   // A complex auto routine that drives forward, extends intake, and then drives backward.
-  private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
+  private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
+  private final Command m_autoNearTrench = new AutoNearTrench(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
+  private final Command m_autoFarTrench = new AutoFarTrench(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -113,8 +117,10 @@ public class RobotContainer {
 
     // m_shooterSubsystem.setDefaultCommand(new ShortShooter(m_shooterSubsystem));
     // Add commands to the autonomous command chooser
-    m_chooser.addOption("Simple Auto", m_simpleAuto);
-    m_chooser.addOption("Complex Auto", m_complexAuto);
+    m_chooser.addOption("Move Off Line", m_simpleAuto);
+    m_chooser.addOption("Shoot Straight", m_complexAuto);
+    m_chooser.addOption("Near Trench", m_autoNearTrench);
+    m_chooser.addOption("Far Trench", m_autoFarTrench);
 
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Autonomous").add(m_chooser);
@@ -197,12 +203,11 @@ public class RobotContainer {
     // While holding the 'X' button, For Future use for vision Aim system
     new JoystickButton(m_driverController, Button.kX.value)
         .whenPressed(
-          new DriveAim(
-            m_robotDrive,
-            () -> m_driverController.getY(GenericHID.Hand.kLeft)))
-        .whenReleased(new DefaultDrive(m_robotDrive,
-          () -> m_driverController.getY(GenericHID.Hand.kLeft),
-          () -> m_driverController.getX(GenericHID.Hand.kRight)));
+          new SequentialCommandGroup(
+            new DriveAim(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft)),
+            new LEDAllGreen(m_ledSubsystem)))
+        .whenReleased(
+          new DefaultDrive(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft),() -> m_driverController.getX(GenericHID.Hand.kRight)));
 
     new JoystickButton(m_driverController, Button.kY.value)
         .whenPressed(new StopShooter(m_shooterSubsystem));

@@ -80,8 +80,37 @@ public class LEDSubsystem extends SubsystemBase {
       case 10: // bluestreak
         blueStreak();
         break;
+      case 11: // red
+        if(led_loop_count++ % 20 == 0){
+          red();
+        }else if(led_loop_count % 10 == 0){
+          clearAll();
+        }
+        break;
+      case 12: // green
+        if(led_loop_count++ % 20 == 0){
+          green();
+        }else if(led_loop_count % 10 == 0){
+          clearAll();
+        }
+        break;
+      case 13: // blue
+        if(led_loop_count++ % 20 == 0){
+          blue();
+        }else if(led_loop_count % 10 == 0){
+          clearAll();
+        }
+        break;
+      case 14: //purple
+        if(led_loop_count++ % 20 == 0){
+          purple();
+        }else if(led_loop_count % 10 == 0){
+          clearAll();
+        }
+        break;
       case 0: // do nothing
         break;
+        
       default:// do nothing
         break;
     }
@@ -118,6 +147,18 @@ public class LEDSubsystem extends SubsystemBase {
   }  
   public void setBlueStreak(){
     m_led_mode_state = 10;
+  }  
+  public void setRedBlink(){
+    m_led_mode_state = 11;
+  }  
+  public void setGreenBlink(){
+    m_led_mode_state = 12;
+  }  
+  public void setBlueBlink(){
+    m_led_mode_state = 13;
+  }  
+  public void setPurpleBlink(){
+    m_led_mode_state = 14;
   }  
 
   public void rainbow() {
@@ -267,7 +308,6 @@ public class LEDSubsystem extends SubsystemBase {
   }
 
   public void clearAll(){
-    m_led_mode_state = 0;
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
         // Sets the specified LED to the RGB values for purple
         m_ledBuffer.setRGB(i, 0, 0, 0);
