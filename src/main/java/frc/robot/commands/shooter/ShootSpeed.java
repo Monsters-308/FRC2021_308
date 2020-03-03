@@ -27,13 +27,12 @@ public class ShootSpeed extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    m_shooterSubsystem.speedControlShooter(m_speedTarget);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooterSubsystem.speedControlShooter(m_speedTarget);
   }
 
   // Called once the command ends or is interrupted.

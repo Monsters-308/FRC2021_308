@@ -12,14 +12,16 @@ import frc.robot.subsystems.HopperSubsystem;;
 public class PulseHopper extends CommandBase {
   // The subsystem the command runs on
   private final HopperSubsystem m_hopperSubsystem;
-  private double m_getFPGATimestamp;
+  // private double m_getFPGATimestamp;
   private double m_onTime;
   private double m_offTime;
+  private Timer m_timer;
 
   public PulseHopper(HopperSubsystem subsystem) {
     m_onTime = 1.0; // default ontime to 1 second
     m_offTime = 0.25; // default offtime to .25 seconds
     m_hopperSubsystem = subsystem;
+    m_timer = new Timer();
     addRequirements(m_hopperSubsystem);
   }
 
@@ -27,23 +29,38 @@ public class PulseHopper extends CommandBase {
     m_onTime = onTime;
     m_offTime = offTime;
     m_hopperSubsystem = subsystem;
+    m_timer.reset();
     addRequirements(m_hopperSubsystem);
   }
 
   @Override
   public void initialize() {
-    m_getFPGATimestamp = Timer.getFPGATimestamp();
+    // m_getFPGATimestamp = Timer.getFPGATimestamp();
+    m_timer.reset();
+    m_timer.start();
   }
 
   @Override
+  public void end(boolean interrupted) {
+    m_timer.stop();
+  }
+  
+  @Override
   public void execute() {
-    if (Timer.getFPGATimestamp() < m_onTime + m_getFPGATimestamp){
+    if(!m_timer.hasPeriodPassed(m_onTime)){
       m_hopperSubsystem.forwardHopper();
-    }else if(Timer.getFPGATimestamp() > m_onTime + m_getFPGATimestamp && Timer.getFPGATimestamp() < m_onTime + m_offTime + m_getFPGATimestamp){
+    }else if(!m_timer.hasPeriodPassed(m_onTime+m_offTime)){
       m_hopperSubsystem.stopHopper();
     }else{
-      m_getFPGATimestamp = Timer.getFPGATimestamp(); // reset the time stamp to no to start onTime again
+      m_timer.reset();
     }
+    // if (Timer.getFPGATimestamp() < m_onTime + m_getFPGATimestamp){
+    //   m_hopperSubsystem.forwardHopper();
+    // }else if(Timer.getFPGATimestamp() > m_onTime + m_getFPGATimestamp && Timer.getFPGATimestamp() < m_onTime + m_offTime + m_getFPGATimestamp){
+    //   m_hopperSubsystem.stopHopper();
+    // }else{
+    //   m_getFPGATimestamp = Timer.getFPGATimestamp(); // reset the time stamp to no to start onTime again
+    // }
   }
 
   @Override

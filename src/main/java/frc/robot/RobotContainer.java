@@ -82,7 +82,7 @@ public class RobotContainer {
 
   // A simple auto routine that drives forward a specified distance, and then stops.
   private final Command m_simpleAuto =
-      new DriveDistance(1,0.5,m_robotDrive);
+      new DriveDistance(5,0.5,m_robotDrive);
 
   // A complex auto routine that drives forward, extends intake, and then drives backward.
   private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
@@ -183,7 +183,7 @@ public class RobotContainer {
         );
 
     new JoystickPOVButton(m_driverController, JoystickPOVButton.NORTH)
-        .whenPressed(new ForwardLift(m_liftSubsystem))
+        .whileHeld(new ForwardLift(m_liftSubsystem))
         .whenReleased(new StopLift(m_liftSubsystem));
 
     new JoystickPOVButton(m_driverController, JoystickPOVButton.SOUTH)

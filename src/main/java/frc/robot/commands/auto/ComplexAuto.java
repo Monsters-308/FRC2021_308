@@ -30,7 +30,7 @@ public class ComplexAuto extends SequentialCommandGroup {
           ),
         new ForwardIndexer(indexer), // run indexer
         new WaitCommand(5.0),
-        new DriveDistance(2, 0.4, drive)
+        new DriveDistance(5, 0.4, drive)
       );
   }
 

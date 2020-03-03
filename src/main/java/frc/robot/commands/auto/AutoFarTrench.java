@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.commands.drive.DriveAimStop;
 import frc.robot.commands.drive.DriveDistance;
-import frc.robot.commands.drive.DriveTime;
 import frc.robot.commands.drive.DriveTurn;
 import frc.robot.commands.hopper.ForwardHopper;
 import frc.robot.commands.indexer.ForwardIndexer;
@@ -35,20 +34,19 @@ public class AutoFarTrench extends SequentialCommandGroup {
         new ParallelCommandGroup(
           new ShortShooter(shooter),
           new SequentialCommandGroup(
-            new DriveDistance(5,0.5,drive),
-            new DriveDistance(-5,-0.5,drive),
-            new DriveDistance(10,0.5,drive),
+            new DriveDistance(3,0.6,drive),
+            new DriveDistance(-3,-0.6,drive),
+            new DriveDistance(40,0.5,drive),
             new ForwardIntake(intake),
-            new ForwardHopper(hopper),
-            new DriveDistance(120,0.4,drive))
+            new ForwardHopper(hopper)
         ),
         new DriveTurn(30,0.3,drive),
         new DriveDistance(-120,-0.5,drive),
-        new ShortShooter(shooter), // Verify Shooter is up to speed get up to speed
         new DriveAimStop(drive),
         new ForwardIndexer(indexer) // run indexer
 
-      );
+      )
+    );
   }
 
 }

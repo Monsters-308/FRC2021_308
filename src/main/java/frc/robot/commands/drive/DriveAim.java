@@ -9,12 +9,7 @@ package frc.robot.commands.drive;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
 
@@ -59,6 +54,16 @@ public class DriveAim extends CommandBase {
     }else{
       rotationAdjust = 0;
     }
+
+    if(rotationAdjust != 0){
+      if(rotationAdjust > 0 && rotationAdjust < 0.1){
+        rotationAdjust = 0.1;
+      }
+      if(rotationAdjust < 0 && rotationAdjust > -0.1){
+        rotationAdjust = -0.1;
+      }
+    }
+
     if(rotationAdjust > 0.3){
       rotationAdjust = 0.3;
     }

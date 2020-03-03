@@ -30,7 +30,7 @@ public class ShortShooter extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if((double)m_shooterSubsystem.getShooterVelocity() > Constants.ShooterConstants.kShortShotRPM && (double)m_shooterSubsystem.getShooterVelocity() > Constants.ShooterConstants.kShortShotRPM){
+    if((double)m_shooterSubsystem.getShooterVelocity() > Constants.ShooterConstants.kShortShotRPM){
       return true;
     }else{
       return false;

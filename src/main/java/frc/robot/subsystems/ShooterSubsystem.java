@@ -30,12 +30,12 @@ public class ShooterSubsystem extends SubsystemBase {
     m_configs.peakOutputForward = 1.0;
     m_configs.peakOutputReverse = 0.0; // dont allow reverse
     
-    m_shooterMotor.configAllSettings(m_configs);
-    m_shooterMotor.config_kF(0,Constants.ShooterConstants.kF);
-    m_shooterMotor.config_kD(0,Constants.ShooterConstants.kD);
-    m_shooterMotor.config_kP(0,Constants.ShooterConstants.kP);
-    m_shooterMotor.config_kI(0,Constants.ShooterConstants.kI);
-
+    m_shooterMotor.configAllSettings(m_configs,20);
+    m_shooterMotor.config_kF(0,Constants.ShooterConstants.kF,20);
+    m_shooterMotor.config_kD(0,Constants.ShooterConstants.kD,20);
+    m_shooterMotor.config_kP(0,Constants.ShooterConstants.kP,20);
+    m_shooterMotor.config_kI(0,Constants.ShooterConstants.kI,20);
+    m_shooterMotor.config_IntegralZone(0, Constants.ShooterConstants.kIzone,20);
     m_shooterMotor.setNeutralMode(NeutralMode.Coast);
     m_shooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0,20);
   }
@@ -61,9 +61,16 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   /**
-   * Reverse Shooter.
+   * Short Shooter.
    */
   public void shortShooter() {
+    m_shooterMotor.set(ControlMode.PercentOutput,ShooterConstants.kShooterMotorShortSpeed);
+  }
+
+  /**
+   * Mid Trench Shooter.
+   */
+  public void midShooter() {
     m_shooterMotor.set(ControlMode.PercentOutput,ShooterConstants.kShooterMotorShortSpeed);
   }
 

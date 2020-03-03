@@ -62,18 +62,21 @@ public final class Constants {
   public static final class ShooterConstants {
     public static final int kShooterMotorCANPort = 9;
     public static final double kShooterMotorForwardSpeed = 0.9;
-    public static final double kShooterMotorShortSpeed = 0.74;
+    public static final double kShooterMotorMidSpeed = 0.75;
+    public static final double kShooterMotorShortSpeed = 0.7;
     public static final double kShooterMotorStopSpeed = 0.0;
     public static final int kUnitsPerRevolution = 2048;
     public static final TalonFXInvertType kInvertType = TalonFXInvertType.CounterClockwise; // <<< What direction you want "forward/up" to be.
     public static final NeutralMode kBrakeDurNeutral = NeutralMode.Coast;
-    public static final double kF = 0.1;
-    public static final double kD = 20.0;
+    public static final double kF = 0.05;
+    public static final double kD = 5.0;
     public static final double kI = 0.001;
-    public static final double kP = 0.25;
+    public static final double kP = 0.1;
+    public static final int kIzone = 300;
     public static final double kvelocityError = 10.0;
     public static final double kLongShotRPM = 5100.0;
-    public static final double kShortShotRPM = 4300.0;
+    public static final double kMidShotRPM = 4300.0;
+    public static final double kShortShotRPM = 4000.0;
   }
 
   public static final class LiftConstants {

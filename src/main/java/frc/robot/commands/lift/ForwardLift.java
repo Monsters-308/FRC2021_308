@@ -20,11 +20,15 @@ public class ForwardLift extends CommandBase {
 
   @Override
   public void initialize() {
-    m_liftSubsystem.forwardLift();
   }
 
   @Override
   public boolean isFinished() {
-    return true;
+    if(m_liftSubsystem.getLimitSwitch()){
+      m_liftSubsystem.forwardLift();
+      return false;
+    }else{
+      return true;
+    }
   }
 }
