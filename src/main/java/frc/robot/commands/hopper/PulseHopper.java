@@ -54,13 +54,6 @@ public class PulseHopper extends CommandBase {
     }else{
       m_timer.reset();
     }
-    // if (Timer.getFPGATimestamp() < m_onTime + m_getFPGATimestamp){
-    //   m_hopperSubsystem.forwardHopper();
-    // }else if(Timer.getFPGATimestamp() > m_onTime + m_getFPGATimestamp && Timer.getFPGATimestamp() < m_onTime + m_offTime + m_getFPGATimestamp){
-    //   m_hopperSubsystem.stopHopper();
-    // }else{
-    //   m_getFPGATimestamp = Timer.getFPGATimestamp(); // reset the time stamp to no to start onTime again
-    // }
   }
 
   @Override
