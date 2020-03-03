@@ -6,8 +6,8 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveDistance extends CommandBase {
   private final DriveSubsystem m_drive;
-  private final double m_distance;
-  private final double m_speed;
+  private double m_distance;
+  private double m_speed;
 
   /**
    * Creates a new DriveDistance.
@@ -25,16 +25,41 @@ public class DriveDistance extends CommandBase {
   @Override
   public void initialize() {
     m_drive.resetEncoders();
-    m_drive.arcadeDrive(m_speed, 0);
   }
 
   @Override
   public void end(boolean interrupted) {
+    if(interrupted){
+      System.out.println("Auton interrupted");
+
+    }else{
+      System.out.println("Normal End");
+
+    }
     m_drive.arcadeDrive(0, 0);
   }
 
   @Override
   public boolean isFinished() {
-    return Math.abs(m_drive.getAverageEncoderDistance()) >= m_distance;
+    if(m_distance > 0){
+      if(m_drive.getLeftEncoder().getPosition() < m_distance){
+        m_drive.arcadeDrive(m_speed, 0);
+        return false;
+      }else{
+        return true;
+      }
+
+    }else if(m_distance < 0){
+      if(m_drive.getLeftEncoder().getPosition() > m_distance){
+          m_drive.arcadeDrive(m_speed, 0);
+          return false;
+        }else{
+          return true;
+        }
+  
+    }else{
+      return true;
+
+    }
   }
 }

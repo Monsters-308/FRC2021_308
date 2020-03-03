@@ -82,7 +82,7 @@ public class RobotContainer {
 
   // A simple auto routine that drives forward a specified distance, and then stops.
   private final Command m_simpleAuto =
-      new DriveDistance(10,0.3,m_robotDrive);
+      new DriveDistance(1,0.5,m_robotDrive);
 
   // A complex auto routine that drives forward, extends intake, and then drives backward.
   private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
@@ -202,12 +202,8 @@ public class RobotContainer {
     //TODO Below for Auto AIM
     // While holding the 'X' button, For Future use for vision Aim system
     new JoystickButton(m_driverController, Button.kX.value)
-        .whenPressed(
-          new SequentialCommandGroup(
-            new DriveAim(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft)),
-            new LEDAllGreen(m_ledSubsystem)))
-        .whenReleased(
-          new DefaultDrive(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft),() -> m_driverController.getX(GenericHID.Hand.kRight)));
+        .whileHeld(
+            new DriveAim(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft)));
 
     new JoystickButton(m_driverController, Button.kY.value)
         .whenPressed(new StopShooter(m_shooterSubsystem));

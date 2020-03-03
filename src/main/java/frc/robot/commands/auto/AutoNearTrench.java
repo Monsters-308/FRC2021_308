@@ -2,7 +2,8 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.drive.DriveAim;
 import frc.robot.commands.drive.DriveAimStop;
 import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.hopper.ForwardHopper;
@@ -30,18 +31,20 @@ public class AutoNearTrench extends SequentialCommandGroup {
    */
   public AutoNearTrench(DriveSubsystem drive, IndexerSubsystem indexer, ShooterSubsystem shooter,IntakeSubsystem intake, HopperSubsystem hopper) {
     addCommands(
+      new SequentialCommandGroup(
         new ParallelCommandGroup(
           new ShortShooter(shooter),
           new SequentialCommandGroup(
-            new DriveDistance(10,0.5,drive),
-            new DriveDistance(-10,-0.5,drive),
+            new WaitCommand(1),
+            new DriveDistance(3,0.6,drive),
+            new DriveDistance(-3,-0.6,drive),
             new ForwardIntake(intake),
             new ForwardHopper(hopper),
-            new DriveDistance(120,0.4,drive))
-        ),
-        new ShortShooter(shooter), // get up to speed
-        new DriveAimStop(drive),
+            new DriveDistance(60,0.5,drive),
+            new DriveAimStop(drive))
+            ),
         new ForwardIndexer(indexer) // run indexer
+      )
 
       );
   }

@@ -22,8 +22,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem(){
     m_shooterMotor.configFactoryDefault();
-    m_configs.openloopRamp = 3.0;
-    m_configs.statorCurrLimit = new StatorCurrentLimitConfiguration(true,40.0,45.0,1.0);
+    m_configs.openloopRamp = 1.0;
+    m_configs.statorCurrLimit = new StatorCurrentLimitConfiguration(true,50.0,55.0,1.0);
     m_configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
     m_configs.nominalOutputForward = 0.0;
     m_configs.nominalOutputReverse = 0.0;

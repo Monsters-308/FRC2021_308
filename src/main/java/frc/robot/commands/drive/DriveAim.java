@@ -9,7 +9,12 @@ package frc.robot.commands.drive;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
 
@@ -23,6 +28,8 @@ public class DriveAim extends CommandBase {
   private double rotationAdjust;
   //TODO need to find the constantForce
   private double constantForce = 0.05;
+
+
   /**
    * Creates a new DriveAim.
    */
@@ -36,20 +43,21 @@ public class DriveAim extends CommandBase {
   @Override
   public void initialize() {
     m_drive.setDriverMode(false);
-    m_drive.setLedState(true);
+    m_drive.setLedState(true);    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_drive.setDriverMode(false);
     rotationAdjust = 0;
     rotationError = m_drive.getVisionYaw();
-    if(rotationError > angleTolerance){
+    if(rotationError > 0.1){
       rotationAdjust = KpRot*rotationError+constantForce;
-    }else{
-      if(rotationError < angleTolerance){
+    }else if(rotationError <-0.1){
         rotationAdjust = KpRot*rotationError-constantForce;
-      }
+    }else{
+      rotationAdjust = 0;
     }
     if(rotationAdjust > 0.3){
       rotationAdjust = 0.3;
@@ -58,7 +66,7 @@ public class DriveAim extends CommandBase {
       rotationAdjust = -0.3;
     }
 
-    m_drive.arcadeDrive(m_forward.getAsDouble()/-1.05,rotationAdjust);
+    m_drive.arcadeDrive(m_forward.getAsDouble()/-1.05,-rotationAdjust);
 
   }
 
@@ -66,8 +74,8 @@ public class DriveAim extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.setDriverMode(true); // Set Camera Back to Normal
-    m_drive.setLedState(false);// turn off LED
+   m_drive.setDriverMode(false);
+   m_drive.setLedState(false);    
   }
 
   // Returns true when the command should end.

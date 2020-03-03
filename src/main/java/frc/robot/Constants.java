@@ -62,7 +62,7 @@ public final class Constants {
   public static final class ShooterConstants {
     public static final int kShooterMotorCANPort = 9;
     public static final double kShooterMotorForwardSpeed = 0.9;
-    public static final double kShooterMotorShortSpeed = 0.7;
+    public static final double kShooterMotorShortSpeed = 0.74;
     public static final double kShooterMotorStopSpeed = 0.0;
     public static final int kUnitsPerRevolution = 2048;
     public static final TalonFXInvertType kInvertType = TalonFXInvertType.CounterClockwise; // <<< What direction you want "forward/up" to be.
@@ -73,7 +73,7 @@ public final class Constants {
     public static final double kP = 0.25;
     public static final double kvelocityError = 10.0;
     public static final double kLongShotRPM = 5100.0;
-    public static final double kShortShotRPM = 4000.0;
+    public static final double kShortShotRPM = 4300.0;
   }
 
   public static final class LiftConstants {
@@ -112,7 +112,7 @@ public final class Constants {
   }
 
   public static final class LEDConstants {
-    public static final int kLEDPWMPort = 9;
-    public static final int kLEDCount = 60;
+    public static final int kLEDPWMPort = 0;
+    public static final int kLEDCount = 82;
   }
 }

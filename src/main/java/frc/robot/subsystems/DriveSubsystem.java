@@ -33,10 +33,10 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
   // The left-side drive encoder
-  private final CANEncoder m_leftEncoder = m_leftFront.getEncoder();
+  private CANEncoder m_leftEncoder = m_leftFront.getEncoder();
 
   // The right-side drive encoder
-  private final CANEncoder m_rightEncoder = m_rightFront.getEncoder();
+  private CANEncoder m_rightEncoder = m_rightFront.getEncoder();
 
   // The Gyro
   private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
@@ -65,15 +65,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightRear.follow(m_rightFront);
 
     // Sets the distance per pulse for the encoders
-    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    m_visionTable = NetworkTableInstance.getDefault().getTable("chameleon-vision").getSubTable("MyCamName");
+    m_leftEncoder.setPositionConversionFactor(1.0);
+    m_rightEncoder.setPositionConversionFactor(1.0);
+    m_visionTable = NetworkTableInstance.getDefault().getTable("chameleon-vision").getSubTable("ShootCam");
     m_visionYaw = m_visionTable.getEntry("yaw");
     m_isDriverMode = m_visionTable.getEntry("driver_mode");
     m_isValid = m_visionTable.getEntry("is_Valid");
     m_pose = m_visionTable.getEntry("poseList");
 
-    m_isDriverMode.setBoolean(true);//set the driver mode
+    m_isDriverMode.setBoolean(false);//set the driver mode
     m_gyro.calibrate();
   }
 
@@ -101,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the TWO encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2.0;
+    return (m_leftEncoder.getPosition() + ((-1.0)*m_rightEncoder.getPosition())) / 2.0;
   }
 
   /**
@@ -166,8 +166,10 @@ public class DriveSubsystem extends SubsystemBase {
     // here is a place to send to the smartdashboard
     SmartDashboard.putNumber("LeftEncoder",m_leftEncoder.getPosition());
     SmartDashboard.putNumber("LeftVelocity",m_leftEncoder.getVelocity());
-    SmartDashboard.putNumber("RightEncoder",m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("RightEncoder",-1.0*m_rightEncoder.getPosition());
     SmartDashboard.putNumber("RightVelocity",m_rightEncoder.getVelocity());
+    SmartDashboard.putNumber("RightSpeed",m_rightFront.get());
+    SmartDashboard.putNumber("LeftSpeed",m_leftFront.get());
 
     SmartDashboard.putNumber("VisionYaw",m_visionYaw.getDouble(0.0));
     SmartDashboard.putBoolean("VisionValid",m_isValid.getBoolean(false));

@@ -44,21 +44,22 @@ public class DriveAimStop extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.setDriverMode(true); // Set Camera Back to Normal
+    m_drive.setDriverMode(false);
     m_drive.setLedState(false);// turn off LED
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    m_drive.setDriverMode(false);
     rotationAdjust = 0;
-    rotationError = m_drive.getVisionYaw();
-    if(rotationError > angleTolerance){
+    rotationError = m_drive.getVisionYaw() +3;
+    if(rotationError > 0.1){
       rotationAdjust = KpRot*rotationError+constantForce;
-    }else{
-      if(rotationError < -angleTolerance){
+    }else if(rotationError <-0.1){
         rotationAdjust = KpRot*rotationError-constantForce;
-      }
+    }else{
+      rotationAdjust = 0;
     }
     if(rotationAdjust > 0.3){
       rotationAdjust = 0.3;
@@ -67,11 +68,11 @@ public class DriveAimStop extends CommandBase {
       rotationAdjust = -0.3;
     }
 
-    if(Math.abs(rotationError)<angleTolerance){
+    if(Math.abs(rotationError)<0.1){
         m_drive.arcadeDrive(0.0,0.0);
         return true;
     }else{
-        m_drive.arcadeDrive(0.0,rotationAdjust);
+        m_drive.arcadeDrive(0.0,-rotationAdjust);
         return false;    
     }
   }
