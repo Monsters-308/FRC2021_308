@@ -46,7 +46,8 @@ public class DriveAim extends CommandBase {
   public void execute() {
     m_drive.setDriverMode(false);
     rotationAdjust = 0;
-    rotationError = m_drive.getVisionYaw()+3;
+    rotationError = m_drive.getVisionYaw() + 3;
+
     if(rotationError > 0.15){
       rotationAdjust = KpRot*rotationError+constantForce;
     }else if(rotationError <-0.15){

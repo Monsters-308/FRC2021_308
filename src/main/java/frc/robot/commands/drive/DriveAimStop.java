@@ -63,10 +63,10 @@ public class DriveAimStop extends CommandBase {
     }
 
     if(rotationAdjust != 0){
-      if(rotationAdjust > 0 && rotationAdjust < 0.15){
+      if(rotationAdjust > 0 && rotationAdjust < 0.2){
         rotationAdjust = 0.2;
       }
-      if(rotationAdjust < 0 && rotationAdjust > -0.15){
+      if(rotationAdjust < 0 && rotationAdjust > -0.2){
         rotationAdjust = -0.2;
       }
     }

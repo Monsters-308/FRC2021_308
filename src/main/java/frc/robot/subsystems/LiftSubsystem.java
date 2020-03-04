@@ -16,7 +16,7 @@ import frc.robot.Constants.LiftConstants;
 public class LiftSubsystem extends SubsystemBase {
   private final WPI_TalonSRX m_liftMotor = new WPI_TalonSRX(LiftConstants.kLiftMotorCANPort);
 
-  private final DigitalInput m_liftLimit = new DigitalInput(Constants.LiftConstants.kLiftSensorPort);
+  private DigitalInput m_liftLimit = new DigitalInput(Constants.LiftConstants.kLiftSensorPort);
 
   public LiftSubsystem(){
     m_liftMotor.setNeutralMode(NeutralMode.Brake);
@@ -29,7 +29,7 @@ public class LiftSubsystem extends SubsystemBase {
     if(m_liftLimit.get()){
       m_liftMotor.set(ControlMode.PercentOutput,LiftConstants.kLiftMotorForwardSpeed);
     }else{
-      m_liftMotor.set(ControlMode.PercentOutput, LiftConstants.kLiftMotorStopSpeed);
+      m_liftMotor.set(ControlMode.PercentOutput, 0.0);
     }
   }
 
