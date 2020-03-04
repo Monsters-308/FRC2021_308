@@ -84,8 +84,9 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic(){
     //TODO add a loop counter in here
-    SmartDashboard.putNumber("Current", m_shooterMotor.getStatorCurrent());
-    SmartDashboard.putNumber("Temp",m_shooterMotor.getTemperature());
-    SmartDashboard.putNumber("RPM",getShooterVelocity());
+    SmartDashboard.putNumber("sCurrent", m_shooterMotor.getStatorCurrent());
+    SmartDashboard.putNumber("sTemp",m_shooterMotor.getTemperature());
+    SmartDashboard.putNumber("sRPM",getShooterVelocity());
+    SmartDashboard.putNumber("sPersent",m_shooterMotor.getMotorOutputPercent());
   }
 }
