@@ -38,6 +38,7 @@ import frc.robot.commands.lift.ForwardLift;
 import frc.robot.commands.lift.ReverseLift;
 import frc.robot.commands.lift.StopLift;
 import frc.robot.commands.shooter.LongShooter;
+import frc.robot.commands.shooter.ShootSpeed;
 import frc.robot.commands.shooter.ShortShooter;
 import frc.robot.commands.shooter.StopShooter;
 import frc.robot.commands.traverse.ForwardTraverse;
@@ -141,7 +142,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kBumperRight.value)
         .whenPressed(
           new SequentialCommandGroup(
-            new LongShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer
+            new ShootSpeed(m_shooterSubsystem,5100),
             new ParallelCommandGroup(
               new ForwardIndexer(m_indexerSubsystem),
               new ForwardHopper(m_hopperSubsystem),
@@ -163,7 +164,8 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
         .whenPressed(
           new SequentialCommandGroup(
-            new ShortShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer
+            new ShootSpeed(m_shooterSubsystem,4000),
+            // new ShortShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer
             new ParallelCommandGroup(
               new ForwardIndexer(m_indexerSubsystem),
               new ForwardHopper(m_hopperSubsystem),

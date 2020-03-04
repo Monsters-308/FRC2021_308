@@ -19,7 +19,7 @@ public class DriveAim extends CommandBase {
   // private double m_targetYawError;
   private double KpRot = -0.1;
   private double rotationError;
-  private double angleTolerance = 3.0;
+  //private double angleTolerance = 3.0;
   private double rotationAdjust;
   //TODO need to find the constantForce
   private double constantForce = 0.05;
@@ -46,10 +46,10 @@ public class DriveAim extends CommandBase {
   public void execute() {
     m_drive.setDriverMode(false);
     rotationAdjust = 0;
-    rotationError = m_drive.getVisionYaw();
-    if(rotationError > 0.1){
+    rotationError = m_drive.getVisionYaw()+3;
+    if(rotationError > 0.15){
       rotationAdjust = KpRot*rotationError+constantForce;
-    }else if(rotationError <-0.1){
+    }else if(rotationError <-0.15){
         rotationAdjust = KpRot*rotationError-constantForce;
     }else{
       rotationAdjust = 0;

@@ -8,6 +8,9 @@ import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.hopper.ForwardHopper;
 import frc.robot.commands.indexer.ForwardIndexer;
 import frc.robot.commands.intake.ForwardIntake;
+import frc.robot.commands.shooter.LongShooter;
+import frc.robot.commands.shooter.MidShooter;
+import frc.robot.commands.shooter.ShootSpeed;
 import frc.robot.commands.shooter.ShortShooter;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -32,19 +35,18 @@ public class AutoNearTrench extends SequentialCommandGroup {
     addCommands(
       new SequentialCommandGroup(
         new ParallelCommandGroup(
-          new ShortShooter(shooter),
+          new ShootSpeed(shooter,4350),
           new SequentialCommandGroup(
-            new WaitCommand(1),
             new DriveDistance(3,0.6,drive),
             new DriveDistance(-3,-0.6,drive),
             new ForwardIntake(intake),
             new ForwardHopper(hopper),
-            new DriveDistance(60,0.5,drive),
-            new DriveAimStop(drive))
-            ),
-        new ForwardIndexer(indexer) // run indexer
+            new DriveDistance(60,0.4,drive),            
+            new DriveAimStop(drive),
+            new ForwardIndexer(indexer) // run indexer
+          )
+        )
       )
-
       );
   }
 

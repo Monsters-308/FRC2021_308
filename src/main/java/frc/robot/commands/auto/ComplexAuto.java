@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.drive.DriveAimStop;
 import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.indexer.ForwardIndexer;
+import frc.robot.commands.shooter.ShootSpeed;
 import frc.robot.commands.shooter.ShortShooter;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -25,10 +26,10 @@ public class ComplexAuto extends SequentialCommandGroup {
   public ComplexAuto(DriveSubsystem drive, IndexerSubsystem indexer, ShooterSubsystem shooter) {
     addCommands(
           new ParallelCommandGroup(
-            new ShortShooter(shooter),
+            new ShootSpeed(shooter, 4000),
             new DriveAimStop(drive)
           ),
-        new ForwardIndexer(indexer), // run indexer
+        new ForwardIndexer(indexer),
         new WaitCommand(5.0),
         new DriveDistance(5, 0.4, drive)
       );

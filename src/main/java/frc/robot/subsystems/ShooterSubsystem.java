@@ -71,7 +71,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * Mid Trench Shooter.
    */
   public void midShooter() {
-    m_shooterMotor.set(ControlMode.PercentOutput,ShooterConstants.kShooterMotorShortSpeed);
+    m_shooterMotor.set(ControlMode.PercentOutput,ShooterConstants.kShooterMotorMidSpeed);
   }
 
   /**
