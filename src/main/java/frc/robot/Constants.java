@@ -74,8 +74,8 @@ public final class Constants {
     public static final double kP = 0.1;
     public static final int kIzone = 300;
     public static final double kvelocityError = 100.0;
-    public static final double kLongShotRPM = 5200.0;
-    public static final double kMidShotRPM = 4300.0;
+    public static final double kLongShotRPM = 5100.0;
+    public static final double kMidShotRPM = 4350.0;
     public static final double kShortShotRPM = 4000.0;
   }
 
@@ -107,6 +107,34 @@ public final class Constants {
     public static final double kAutoBackupDistanceInches = 20;
     public static final double kAutoDriveSpeed = 0.2;
     public static final double kAutoDriveTime = 3.0;
+
+    //Auton Speed and Distance to jerk the Intake Down
+    public static final double kAutoJerkForwardSpeed = 0.6;
+    public static final double kAutoJerkReverseSpeed = -0.6;
+    public static final double kAutoJerkDistance = 3.0;
+
+    //Auton Near Trench Constants
+    public static final double kAutoNearTrenchDistance = 60.0;
+    public static final double kAutoNearTrenchSpeed = 0.4;
+
+    //Auton Straight Shot Constants
+    public static final double kAutoStraightDistance = 5.0;
+    public static final double kAutoStraightSpeed = 0.4;
+    public static final double kAutoStraightWaitTime = 5.0;
+
+    //Auton Near Trench Constants
+    public static final double kAutoFarTrenchDistance = 50.0;
+    public static final double kAutoFarTrenchSpeed = 0.4;
+    public static final double kAutoFarTrenchWait = 1;
+    public static final double kAutoFarTrenchTurn = 30.0;
+    public static final double kAutoFarTrenchTurnSpeed = -0.5;
+    public static final double kAutoFarTrenchReverseDistance = -60.0;
+    public static final double kAutoFarTrenchReverseSpeed = -0.5;
+
+    //Auton DriveOffLine
+    public static final double kAutoDriveOffLineDistance = 5;
+    public static final double kAutoDriveOffLineSpeed = 0.5;
+
   }
 
   public static final class OIConstants {

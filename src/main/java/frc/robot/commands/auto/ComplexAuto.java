@@ -3,11 +3,11 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.commands.drive.DriveAimStop;
 import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.indexer.ForwardIndexer;
 import frc.robot.commands.shooter.ShootSpeed;
-import frc.robot.commands.shooter.ShortShooter;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -26,12 +26,15 @@ public class ComplexAuto extends SequentialCommandGroup {
   public ComplexAuto(DriveSubsystem drive, IndexerSubsystem indexer, ShooterSubsystem shooter) {
     addCommands(
           new ParallelCommandGroup(
-            new ShootSpeed(shooter, 4000),
+            new ShootSpeed(shooter, Constants.ShooterConstants.kShortShotRPM),
             new DriveAimStop(drive)
           ),
         new ForwardIndexer(indexer),
-        new WaitCommand(5.0),
-        new DriveDistance(5, 0.4, drive)
+        new WaitCommand(Constants.AutoConstants.kAutoStraightWaitTime),
+        new DriveDistance(
+          Constants.AutoConstants.kAutoStraightDistance, 
+          Constants.AutoConstants.kAutoStraightSpeed,
+           drive)
       );
   }
 

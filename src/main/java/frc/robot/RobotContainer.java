@@ -39,7 +39,6 @@ import frc.robot.commands.lift.ReverseLift;
 import frc.robot.commands.lift.StopLift;
 import frc.robot.commands.shooter.LongShooter;
 import frc.robot.commands.shooter.ShootSpeed;
-import frc.robot.commands.shooter.ShortShooter;
 import frc.robot.commands.shooter.StopShooter;
 import frc.robot.commands.traverse.ForwardTraverse;
 import frc.robot.commands.traverse.ReverseTraverse;
@@ -83,7 +82,10 @@ public class RobotContainer {
 
   // A simple auto routine that drives forward a specified distance, and then stops.
   private final Command m_simpleAuto =
-      new DriveDistance(5,0.5,m_robotDrive);
+      new DriveDistance(
+        Constants.AutoConstants.kAutoDriveOffLineDistance,
+        Constants.AutoConstants.kAutoDriveOffLineSpeed,
+        m_robotDrive);
 
   // A complex auto routine that drives forward, extends intake, and then drives backward.
   private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
@@ -138,11 +140,11 @@ public class RobotContainer {
     /**************************
      * Driver Button Commands *
     ***************************/
-    // While holding the 'RightBumper' button, power Shooter Indexer and Hopper sequential util speed limit then index balls
+    // While holding the 'RightBumper' button, power Shooter for Long Shot Indexer and Hopper sequential util speed limit then index balls
     new JoystickButton(m_driverController, Button.kBumperRight.value)
         .whenPressed(
           new SequentialCommandGroup(
-            new ShootSpeed(m_shooterSubsystem,5100),
+            new ShootSpeed(m_shooterSubsystem,Constants.ShooterConstants.kLongShotRPM),
             new ParallelCommandGroup(
               new ForwardIndexer(m_indexerSubsystem),
               new ForwardHopper(m_hopperSubsystem),
@@ -161,11 +163,11 @@ public class RobotContainer {
           )
         );
 
+    // While holding the 'LeftBumper' button, power Shooter for InitLine Shot Indexer and Hopper sequential util speed limit then index balls
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
         .whenPressed(
           new SequentialCommandGroup(
-            new ShootSpeed(m_shooterSubsystem,4000),
-            // new ShortShooter(m_shooterSubsystem), // speed up to 100 RPM until running the indexer
+            new ShootSpeed(m_shooterSubsystem,Constants.ShooterConstants.kShortShotRPM),
             new ParallelCommandGroup(
               new ForwardIndexer(m_indexerSubsystem),
               new ForwardHopper(m_hopperSubsystem),
@@ -185,7 +187,7 @@ public class RobotContainer {
         );
 
     new JoystickPOVButton(m_driverController, JoystickPOVButton.NORTH)
-        .whileHeld(new ForwardLift(m_liftSubsystem))
+        .whenPressed(new ForwardLift(m_liftSubsystem))
         .whenReleased(new StopLift(m_liftSubsystem));
 
     new JoystickPOVButton(m_driverController, JoystickPOVButton.SOUTH)
@@ -201,12 +203,12 @@ public class RobotContainer {
         .whenReleased(new StopTraverse(m_traverseSubsystem));
 
 
-    //TODO Below for Auto AIM
     // While holding the 'X' button, For Future use for vision Aim system
     new JoystickButton(m_driverController, Button.kX.value)
         .whileHeld(
             new DriveAim(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft)));
 
+    // When Pressed the 'Y' button will stop the commanded speed of the wheel
     new JoystickButton(m_driverController, Button.kY.value)
         .whenPressed(new StopShooter(m_shooterSubsystem));
   
