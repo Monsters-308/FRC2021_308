@@ -75,7 +75,7 @@ public final class Constants {
     public static final int kIzone = 300;
     public static final double kvelocityError = 100.0;
     public static final double kLongShotRPM = 5100.0;
-    public static final double kMidShotRPM = 4350.0;
+    public static final double kMidShotRPM = 4200.0;
     public static final double kShortShotRPM = 4000.0;
   }
 

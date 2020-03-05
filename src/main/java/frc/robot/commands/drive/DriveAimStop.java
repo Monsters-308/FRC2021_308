@@ -54,9 +54,9 @@ public class DriveAimStop extends CommandBase {
     m_drive.setDriverMode(false);
     rotationAdjust = 0;
     rotationError = m_drive.getVisionYaw() +5;
-    if(rotationError > 0.2){
+    if(rotationError > 0.15){
       rotationAdjust = KpRot*rotationError+constantForce;
-    }else if(rotationError <-0.2){
+    }else if(rotationError <-0.15){
         rotationAdjust = KpRot*rotationError-constantForce;
     }else{
       rotationAdjust = 0;
@@ -78,7 +78,7 @@ public class DriveAimStop extends CommandBase {
       rotationAdjust = -0.3;
     }
 
-    if(Math.abs(rotationError)<0.1){
+    if(Math.abs(rotationError)<0.3){
         m_drive.arcadeDrive(0.0,0.0);
         return true;
     }else{

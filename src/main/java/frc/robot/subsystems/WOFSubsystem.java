@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.WOFConstants;
@@ -14,11 +15,19 @@ import frc.robot.Constants.WOFConstants;
 public class WOFSubsystem extends SubsystemBase {
   private final WPI_TalonSRX m_wofMotor = new WPI_TalonSRX(WOFConstants.kWOFMotorCANPort);
 
+  
 
   public WOFSubsystem(){
     m_wofMotor.setNeutralMode(NeutralMode.Brake);
   }
 
+  @Override
+  public void periodic(){
+  // SmartDashboard.putBoolean("Blue", WOF_Blue);
+  // SmartDashboard.putBoolean("Red", WOF_Red);
+  // SmartDashboard.putBoolean("Green", WOF_Green);
+  // SmartDashboard.putBoolean("Yellow", detectcolor.Red);
+  }
   /**
    * Forward WOF.
    */

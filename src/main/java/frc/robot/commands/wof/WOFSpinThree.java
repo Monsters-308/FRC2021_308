@@ -31,6 +31,11 @@ public class WOFSpinThree extends CommandBase {
   }
 
   @Override
+  public void end(boolean interrupted){
+    m_getFPGATimestamp = 0;
+  }
+  
+  @Override
   public boolean isFinished() {
     if (Timer.getFPGATimestamp() <= m_getFPGATimestamp + 3.5) {
       return false;

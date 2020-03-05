@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.drive.DriveAimStop;
 import frc.robot.commands.drive.DriveDistance;
@@ -34,6 +35,7 @@ public class AutoNearTrench extends SequentialCommandGroup {
         new ParallelCommandGroup(
           new ShootSpeed(shooter,Constants.ShooterConstants.kMidShotRPM),
           new SequentialCommandGroup(
+            new WaitCommand(0.5),
             new DriveDistance(
               Constants.AutoConstants.kAutoJerkForwardSpeed,
               Constants.AutoConstants.kAutoJerkDistance,

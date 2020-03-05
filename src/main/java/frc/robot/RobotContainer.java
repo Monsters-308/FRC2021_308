@@ -13,6 +13,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.auto.AutoFarTrench;
 import frc.robot.commands.auto.AutoNearTrench;
 import frc.robot.commands.auto.ComplexAuto;
+import frc.robot.commands.auto.ComplexAutoLeft;
 import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveAim;
 import frc.robot.commands.drive.DriveDistance;
@@ -88,7 +89,8 @@ public class RobotContainer {
         m_robotDrive);
 
   // A complex auto routine that drives forward, extends intake, and then drives backward.
-  private final Command m_complexAuto = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
+  private final Command m_complexAutoLeft = new ComplexAutoLeft(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
+  private final Command m_complexAutoRight = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
   private final Command m_autoNearTrench = new AutoNearTrench(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
   private final Command m_autoFarTrench = new AutoFarTrench(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
 
@@ -121,9 +123,10 @@ public class RobotContainer {
     // m_shooterSubsystem.setDefaultCommand(new ShortShooter(m_shooterSubsystem));
     // Add commands to the autonomous command chooser
     m_chooser.addOption("Move Off Line", m_simpleAuto);
-    m_chooser.addOption("Shoot Straight", m_complexAuto);
+    m_chooser.addOption("Shoot Straight(right)", m_complexAutoRight);
     m_chooser.addOption("Near Trench", m_autoNearTrench);
     m_chooser.addOption("Far Trench", m_autoFarTrench);
+    m_chooser.addOption("Shoot Straight(left)", m_complexAutoLeft);
 
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Autonomous").add(m_chooser);
