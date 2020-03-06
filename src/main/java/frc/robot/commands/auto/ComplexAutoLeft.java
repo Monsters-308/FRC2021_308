@@ -24,6 +24,7 @@ public class ComplexAutoLeft extends SequentialCommandGroup {
    */
   public ComplexAutoLeft(DriveSubsystem drive, IndexerSubsystem indexer, ShooterSubsystem shooter) {
     addCommands(
+        new SequentialCommandGroup(
           new ParallelCommandGroup(
             new ShootSpeed(shooter, 4000),
             new DriveAimStopLeft(drive)
@@ -31,6 +32,7 @@ public class ComplexAutoLeft extends SequentialCommandGroup {
         new ForwardIndexer(indexer),
         new WaitCommand(5.0),
         new DriveDistance(5, 0.4, drive)
+        )
       );
   }
 

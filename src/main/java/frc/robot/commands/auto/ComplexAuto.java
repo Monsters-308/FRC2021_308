@@ -25,6 +25,7 @@ public class ComplexAuto extends SequentialCommandGroup {
    */
   public ComplexAuto(DriveSubsystem drive, IndexerSubsystem indexer, ShooterSubsystem shooter) {
     addCommands(
+        new SequentialCommandGroup(
           new ParallelCommandGroup(
             new ShootSpeed(shooter, Constants.ShooterConstants.kShortShotRPM),
             new DriveAimStop(drive)
@@ -35,6 +36,7 @@ public class ComplexAuto extends SequentialCommandGroup {
           Constants.AutoConstants.kAutoStraightDistance, 
           Constants.AutoConstants.kAutoStraightSpeed,
            drive)
+        )
       );
   }
 

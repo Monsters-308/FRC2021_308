@@ -37,12 +37,12 @@ public class AutoNearTrench extends SequentialCommandGroup {
           new SequentialCommandGroup(
             new WaitCommand(0.5),
             new DriveDistance(
-              Constants.AutoConstants.kAutoJerkForwardSpeed,
               Constants.AutoConstants.kAutoJerkDistance,
+              Constants.AutoConstants.kAutoJerkForwardSpeed,
               drive),
             new DriveDistance(
-              Constants.AutoConstants.kAutoJerkReverseSpeed,
               Constants.AutoConstants.kAutoJerkDistance,
+              Constants.AutoConstants.kAutoJerkReverseSpeed,
               drive),
             new ForwardIntake(intake),
             new ForwardHopper(hopper),

@@ -57,11 +57,11 @@ public class DriveAim extends CommandBase {
     }
 
     if(rotationAdjust != 0){
-      if(rotationAdjust > 0 && rotationAdjust < 0.1){
-        rotationAdjust = 0.1;
+      if(rotationAdjust > 0 && rotationAdjust < 0.15){
+        rotationAdjust = 0.15;
       }
-      if(rotationAdjust < 0 && rotationAdjust > -0.1){
-        rotationAdjust = -0.1;
+      if(rotationAdjust < 0 && rotationAdjust > -0.15){
+        rotationAdjust = -0.15;
       }
     }
 

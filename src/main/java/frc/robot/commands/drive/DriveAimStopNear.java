@@ -54,7 +54,7 @@ public class DriveAimStopNear extends CommandBase {
   public boolean isFinished() {
     m_drive.setDriverMode(false);
     rotationAdjust = 0;
-    rotationError = m_drive.getVisionYaw() +7;
+    rotationError = m_drive.getVisionYaw() +5;
     if(rotationError > 0.15){
       rotationAdjust = KpRot*rotationError+constantForce;
     }else if(rotationError <-0.15){

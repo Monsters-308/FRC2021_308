@@ -36,12 +36,12 @@ public class AutoFarTrench extends SequentialCommandGroup {
           new ShootSpeed(shooter,Constants.ShooterConstants.kMidShotRPM),
           new SequentialCommandGroup(
             new DriveDistance(
-              Constants.AutoConstants.kAutoJerkForwardSpeed,
               Constants.AutoConstants.kAutoJerkDistance,
+              Constants.AutoConstants.kAutoJerkForwardSpeed,
               drive),
             new DriveDistance(
-              Constants.AutoConstants.kAutoJerkReverseSpeed,
               Constants.AutoConstants.kAutoJerkDistance,
+              Constants.AutoConstants.kAutoJerkReverseSpeed,
               drive),
             new ForwardIntake(intake),
             new ForwardHopper(hopper),
