@@ -2,7 +2,8 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.drive.DriveAimStopLeft;
 import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.indexer.ForwardIndexer;
@@ -26,8 +27,8 @@ public class ComplexAutoLeft extends SequentialCommandGroup {
     addCommands(
         new SequentialCommandGroup(
           new ParallelCommandGroup(
-            new ShootSpeed(shooter, 4000),
-            new DriveDistance(5, 0.4, drive),
+            new ShootSpeed(shooter, ShooterConstants.kShortShotRPM),
+            new DriveDistance(AutoConstants.kAutoStraightDistance, AutoConstants.kAutoStraightSpeed, drive),
             new DriveAimStopLeft(drive)
           ),
         new ForwardIndexer(indexer)
