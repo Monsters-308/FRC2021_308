@@ -37,7 +37,7 @@ public final class Constants {
     public static final int kIntakeSolenoidPort = 0;
     public static final int kIntakeMotorCANPort = 1; //0
     public static final double kIntakeMotorForwardSpeed = 1.0;
-    public static final double kIntakeMotorReverseSpeed = -0.5;
+    public static final double kIntakeMotorReverseSpeed = -1.0;
     public static final double kIntakeMotorStopSpeed = 0.0;
   }
 
@@ -74,8 +74,8 @@ public final class Constants {
     public static final double kP = 0.1;
     public static final int kIzone = 300;
     public static final double kvelocityError = 100.0;
-    public static final double kLongShotRPM = 5100.0;
-    public static final double kMidShotRPM = 4200.0;
+    public static final double kLongShotRPM = 5375.0;
+    public static final double kMidShotRPM = 4300.0;
     public static final double kShortShotRPM = 4000.0;
   }
 
@@ -112,6 +112,7 @@ public final class Constants {
     public static final double kAutoJerkForwardSpeed = 0.6;
     public static final double kAutoJerkReverseSpeed = -0.6;
     public static final double kAutoJerkDistance = 3.0;
+    public static final double kAutoJerReversekDistance = -3.0;
 
     //Auton Near Trench Constants
     public static final double kAutoNearTrenchDistance = 60.0;
@@ -138,8 +139,8 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final int kDriverControllerPort = 1;
-    public static final int kCoDriverControllerPort = 2;
+    public static final int kDriverControllerPort = 0;
+    public static final int kCoDriverControllerPort = 1;
   }
 
   public static final class LEDConstants {

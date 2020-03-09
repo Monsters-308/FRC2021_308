@@ -27,11 +27,10 @@ public class ComplexAutoLeft extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new ParallelCommandGroup(
             new ShootSpeed(shooter, 4000),
+            new DriveDistance(5, 0.4, drive),
             new DriveAimStopLeft(drive)
           ),
-        new ForwardIndexer(indexer),
-        new WaitCommand(5.0),
-        new DriveDistance(5, 0.4, drive)
+        new ForwardIndexer(indexer)
         )
       );
   }

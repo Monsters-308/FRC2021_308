@@ -53,7 +53,7 @@ public class DriveAimStopLeft extends CommandBase {
   public boolean isFinished() {
     m_drive.setDriverMode(false);
     rotationAdjust = 0;
-    rotationError = m_drive.getVisionYaw() +7;
+    rotationError = m_drive.getVisionYaw() +10;
     if(rotationError > 0.2){
       rotationAdjust = KpRot*rotationError+constantForce;
     }else if(rotationError <-0.2){
@@ -63,11 +63,11 @@ public class DriveAimStopLeft extends CommandBase {
     }
 
     if(rotationAdjust != 0){
-      if(rotationAdjust > 0 && rotationAdjust < 0.2){
-        rotationAdjust = 0.2;
+      if(rotationAdjust > 0 && rotationAdjust < 0.25){
+        rotationAdjust = 0.25;
       }
-      if(rotationAdjust < 0 && rotationAdjust > -0.2){
-        rotationAdjust = -0.2;
+      if(rotationAdjust < 0 && rotationAdjust > -0.25){
+        rotationAdjust = -0.25;
       }
     }
     
@@ -78,7 +78,7 @@ public class DriveAimStopLeft extends CommandBase {
       rotationAdjust = -0.3;
     }
 
-    if(Math.abs(rotationError)<0.3){
+    if(Math.abs(rotationError)<0.4 ) {
         m_drive.arcadeDrive(0.0,0.0);
         return true;
     }else{

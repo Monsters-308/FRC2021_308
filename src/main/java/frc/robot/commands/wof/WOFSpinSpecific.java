@@ -3,8 +3,8 @@ package frc.robot.commands.wof;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.util.Color;
-import com.revrobotics.ColorSensorV3;
+//import edu.wpi.first.wpilibj.util.Color;
+//import com.revrobotics.ColorSensorV3;
 import frc.robot.subsystems.WOFSubsystem;;
 
 /**
@@ -12,10 +12,10 @@ import frc.robot.subsystems.WOFSubsystem;;
  * explicitly for pedagogical purposes. Actual code should inline a command this
  * simple with {@link edu.wpi.first.wpilibj2.command.InstantCommand}.
  */
-public class WOFSpinSpecific extends CommandBase {
+//public class WOFSpinSpecific extends CommandBase {
   // The subsystem the command runs on
-  private final WOFSubsystem m_wofSubsystem;
-  private final I2C.Port i2cport = I2C.Port.kOnboard;
+  //private final WOFSubsystem m_wofSubsystem;
+  /*private final I2C.Port i2cport = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorsensor = new ColorSensorV3(i2cport);
   int proximity = m_colorsensor.getProximity();
   boolean WOF_Yellow = false;
@@ -101,3 +101,4 @@ public class WOFSpinSpecific extends CommandBase {
     return false;
   }
 }
+*/

@@ -13,22 +13,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 
-public class DriveAim extends CommandBase {
+public class DriveAimFar extends CommandBase {
   private final DriveSubsystem m_drive;
   private final DoubleSupplier m_forward;
   // private double m_targetYawError;
   private double KpRot = -0.1;
   private double rotationError;
-  //private double angleTolerance = 3.0;
+  // private double angleTolerance = 3.0;
   private double rotationAdjust;
-  //TODO need to find the constantForce
+  // TODO need to find the constantForce
   private double constantForce = 0.05;
-
 
   /**
    * Creates a new DriveAim.
    */
-  public DriveAim(DriveSubsystem subsystem, DoubleSupplier forward) {
+  public DriveAimFar(DriveSubsystem subsystem, DoubleSupplier forward) {
     m_forward = forward;
     m_drive = subsystem;
     addRequirements(m_drive);
@@ -47,7 +46,7 @@ public class DriveAim extends CommandBase {
     m_drive.setDriverMode(false);
     rotationAdjust = 0;
     // inc angle makes it go further right
-    rotationError = m_drive.getVisionYaw() + 12;
+    rotationError = m_drive.getVisionYaw() + 4;
 
     if(rotationError > 0.15){
       rotationAdjust = KpRot*rotationError+constantForce;

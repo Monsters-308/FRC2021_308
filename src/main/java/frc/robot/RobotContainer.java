@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,6 +17,7 @@ import frc.robot.commands.auto.ComplexAuto;
 import frc.robot.commands.auto.ComplexAutoLeft;
 import frc.robot.commands.drive.DefaultDrive;
 import frc.robot.commands.drive.DriveAim;
+import frc.robot.commands.drive.DriveAimFar;
 import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.intake.ForwardIntake;
 import frc.robot.commands.intake.PerpetualIntake;
@@ -35,27 +37,29 @@ import frc.robot.commands.led.LEDAllRed;
 import frc.robot.commands.led.LEDFrenzy;
 import frc.robot.commands.led.LEDGreenStreak;
 import frc.robot.commands.led.LEDRedStreak;
+import frc.robot.commands.lift.DefaultLift;
 import frc.robot.commands.lift.ForwardLift;
 import frc.robot.commands.lift.ReverseLift;
 import frc.robot.commands.lift.StopLift;
 import frc.robot.commands.shooter.LongShooter;
 import frc.robot.commands.shooter.ShootSpeed;
 import frc.robot.commands.shooter.StopShooter;
-import frc.robot.commands.traverse.ForwardTraverse;
-import frc.robot.commands.traverse.ReverseTraverse;
-import frc.robot.commands.traverse.StopTraverse;
+// import frc.robot.commands.traverse.ForwardTraverse;
+// import frc.robot.commands.traverse.ReverseTraverse;
+// import frc.robot.commands.traverse.StopTraverse;
 import frc.robot.commands.wof.SlowForwardWOF;
 import frc.robot.commands.wof.SlowReverseWOF;
 import frc.robot.commands.wof.StopWOF;
-import frc.robot.commands.wof.WOFSpinSpecific;
+//import frc.robot.commands.wof.WOFSpinSpecific;
 import frc.robot.commands.wof.WOFSpinThree;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.LiftSubsystem;
+// import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.LiftTraverseSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TraverseSubsystem;
+// import frc.robot.subsystems.TraverseSubsystem;
 import frc.robot.subsystems.WOFSubsystem;
 import frc.robot.util.JoystickPOVButton;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -76,9 +80,10 @@ public class RobotContainer {
   private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final WOFSubsystem m_wofSubsystem = new WOFSubsystem();
-  private final LiftSubsystem m_liftSubsystem = new LiftSubsystem();
-  private final TraverseSubsystem m_traverseSubsystem = new TraverseSubsystem();
+  // private final LiftSubsystem m_liftSubsystem = new LiftSubsystem();
+  // private final TraverseSubsystem m_traverseSubsystem = new TraverseSubsystem();
   private final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
+  private final LiftTraverseSubsystem m_liftTraverse = new LiftTraverseSubsystem();
   // The autonomous routines
 
   // A simple auto routine that drives forward a specified distance, and then stops.
@@ -122,7 +127,11 @@ public class RobotContainer {
 
     // m_shooterSubsystem.setDefaultCommand(new ShortShooter(m_shooterSubsystem));
     // Add commands to the autonomous command chooser
-    m_chooser.addOption("Move Off Line", m_simpleAuto);
+    m_liftTraverse.setDefaultCommand(new DefaultLift(m_liftTraverse,
+    () -> m_coDriverController.getY(GenericHID.Hand.kLeft),
+    () -> m_coDriverController.getX(GenericHID.Hand.kRight)));
+
+m_chooser.addOption("Move Off Line", m_simpleAuto);
     m_chooser.addOption("Shoot Straight(right)", m_complexAutoRight);
     m_chooser.addOption("Near Trench", m_autoNearTrench);
     m_chooser.addOption("Far Trench", m_autoFarTrench);
@@ -189,27 +198,28 @@ public class RobotContainer {
           )
         );
 
-    new JoystickPOVButton(m_driverController, JoystickPOVButton.NORTH)
-        .whenPressed(new ForwardLift(m_liftSubsystem))
-        .whenReleased(new StopLift(m_liftSubsystem));
 
-    new JoystickPOVButton(m_driverController, JoystickPOVButton.SOUTH)
-        .whenPressed(new ReverseLift(m_liftSubsystem))
-        .whenReleased(new StopLift(m_liftSubsystem));
+    // new JoystickPOVButton(m_driverController, JoystickPOVButton.NORTH)
+    //     .whenPressed(new ForwardLift(m_liftSubsystem))
+    //     .whenReleased(new StopLift(m_liftSubsystem));
 
-    new JoystickPOVButton(m_driverController, JoystickPOVButton.WEST)
-        .whenPressed(new ForwardTraverse(m_traverseSubsystem))
-        .whenReleased(new StopTraverse(m_traverseSubsystem));
+    // new JoystickPOVButton(m_driverController, JoystickPOVButton.SOUTH)
+    //     .whenPressed(new ReverseLift(m_liftSubsystem))
+    //     .whenReleased(new StopLift(m_liftSubsystem));
 
-    new JoystickPOVButton(m_driverController, JoystickPOVButton.EAST)
-        .whenPressed(new ReverseTraverse(m_traverseSubsystem))
-        .whenReleased(new StopTraverse(m_traverseSubsystem));
+    // new JoystickPOVButton(m_driverController, JoystickPOVButton.WEST)
+    //     .whenPressed(new ForwardTraverse(m_traverseSubsystem))
+    //     .whenReleased(new StopTraverse(m_traverseSubsystem));
+
+    // new JoystickPOVButton(m_driverController, JoystickPOVButton.EAST)
+    //     .whenPressed(new ReverseTraverse(m_traverseSubsystem))
+    //     .whenReleased(new StopTraverse(m_traverseSubsystem));
 
 
     // While holding the 'X' button, For Future use for vision Aim system
     new JoystickButton(m_driverController, Button.kX.value)
         .whileHeld(
-            new DriveAim(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft)));
+            new DriveAimFar(m_robotDrive, () -> m_driverController.getY(GenericHID.Hand.kLeft)));
 
     // When Pressed the 'Y' button will stop the commanded speed of the wheel
     new JoystickButton(m_driverController, Button.kY.value)
@@ -275,21 +285,21 @@ public class RobotContainer {
 
 
     // TODO Finish Testing the below features
-    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.NORTH)
-        .whenPressed(new WOFSpinThree(m_wofSubsystem))
-        .whenReleased(new StopWOF(m_wofSubsystem));
+    //new JoystickPOVButton(m_coDriverController, JoystickPOVButton.NORTH)
+      //  .whenPressed(new WOFSpinThree(m_wofSubsystem))
+       // .whenReleased(new StopWOF(m_wofSubsystem));
 
-    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.SOUTH)
-        .whenPressed(new WOFSpinSpecific(m_wofSubsystem))
-        .whenReleased(new StopWOF(m_wofSubsystem));
+//    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.SOUTH)
+  //      .whenPressed(new WOFSpinSpecific(m_wofSubsystem))
+    //    .whenReleased(new StopWOF(m_wofSubsystem));
 
-    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.WEST)
-        .whenPressed(new SlowForwardWOF(m_wofSubsystem))
-        .whenReleased(new StopWOF(m_wofSubsystem));
+    //new JoystickPOVButton(m_coDriverController, JoystickPOVButton.WEST)
+      //  .whenPressed(new SlowForwardWOF(m_wofSubsystem))
+        //.whenReleased(new StopWOF(m_wofSubsystem));
 
-    new JoystickPOVButton(m_coDriverController, JoystickPOVButton.EAST)
-        .whenPressed(new SlowReverseWOF(m_wofSubsystem))
-        .whenReleased(new StopWOF(m_wofSubsystem));
+    //new JoystickPOVButton(m_coDriverController, JoystickPOVButton.EAST)
+       // .whenPressed(new SlowReverseWOF(m_wofSubsystem))
+        //.whenReleased(new StopWOF(m_wofSubsystem));
 
   }
 
