@@ -32,35 +32,29 @@ public class AutoFarTrench extends SequentialCommandGroup {
    */
   public AutoFarTrench(DriveSubsystem drive, IndexerSubsystem indexer, ShooterSubsystem shooter,IntakeSubsystem intake, HopperSubsystem hopper) {
     addCommands(
-        new ParallelCommandGroup(
-          new ShootSpeed(shooter,Constants.ShooterConstants.kMidShotRPM),
-          new SequentialCommandGroup(
-            new DriveDistance(
-              Constants.AutoConstants.kAutoJerkDistance,
-              Constants.AutoConstants.kAutoJerkForwardSpeed,
-              drive),
-            new DriveDistance(
-              Constants.AutoConstants.kAutoJerkDistance,
-              Constants.AutoConstants.kAutoJerkReverseSpeed,
-              drive),
-            new ForwardIntake(intake),
-            new ForwardHopper(hopper),
-            new DriveDistance(
-              Constants.AutoConstants.kAutoFarTrenchDistance,
-              Constants.AutoConstants.kAutoFarTrenchSpeed,
-              drive),
-            new WaitCommand(Constants.AutoConstants.kAutoFarTrenchWait),
-            new DriveTurn(
-              Constants.AutoConstants.kAutoFarTrenchTurn,
-              Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
-              drive),
-            new DriveDistance(
-              Constants.AutoConstants.kAutoFarTrenchReverseDistance,
-              Constants.AutoConstants.kAutoFarTrenchReverseSpeed,
-              drive),
-            new DriveAimStop(drive),
-            new ForwardIndexer(indexer) // run indexer
-          )
+      new ParallelCommandGroup(
+        new SequentialCommandGroup(
+          new DriveDistance(                                //Drive 30 Inches
+            Constants.AutoConstants.kAutoFarTrenchReverseDistance,
+            Constants.AutoConstants.kAutoFarTrenchReverseSpeed,
+            drive),
+          new DriveTurn(                                    //Turn 90 Degrees
+            Constants.AutoConstants.kAutoFarTrenchTurn, 
+            Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
+            drive),
+          new DriveDistance(                                //Drive 30 Inches
+            Constants.AutoConstants.kAutoFarTrenchReverseDistance,
+            Constants.AutoConstants.kAutoFarTrenchReverseSpeed,
+            drive),
+          new DriveTurn(                                    //Turn 90 Degrees
+            Constants.AutoConstants.kAutoFarTrenchTurn,
+            Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
+            drive),
+          new DriveDistance(                                //Drive 30 Inches
+            Constants.AutoConstants.kAutoFarTrenchReverseDistance,
+            Constants.AutoConstants.kAutoFarTrenchReverseSpeed,
+            drive)
+        )
       )
     );
   }
