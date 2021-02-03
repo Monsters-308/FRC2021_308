@@ -129,6 +129,7 @@ public final class Constants {
     public static final double kAutoFarTrenchWait = 1;
     public static final double kAutoFarTrenchTurn = 90.0;
     public static final double kAutoFarTrenchTurnSpeed = 0.5;
+    public static final double kAutoFarTrenchTurnStop = 0.0;
     public static final double kAutoFarTrenchReverseDistance = -30.0;
     public static final double kAutoFarTrenchReverseSpeed = -0.5;
 

@@ -38,14 +38,27 @@ public class AutoFarTrench extends SequentialCommandGroup {
             Constants.AutoConstants.kAutoFarTrenchDistance,
             Constants.AutoConstants.kAutoFarTrenchSpeed,
             drive),
-          new DriveTurn(                                    //Turn 90 Degrees
-            m_gyro.reset(),
-            m_gyro.getAngle(),
-            while m_gyro.getAngle() != 88||89||90|91||92 {
+          new DriveTurn(//Turn 90 Degrees(works, turns a few times and stops at 90, infinate turns) Change Turn to 1 and test if it doesnt work
+            m_gyro.reset(), // will it stop at 88/92 or at exactly 90?
+            while abs(m_gyro.getAngle()) != 88<=92 {
               Constants.AutoConstants.kAutoFarTrenchTurn,
             Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
+            abs(m_gyro.getAngle())
             } 
+            Constants.AutoConstants.kAutoFarTrenchTurnStop,
             m_gyro.reset(),
+
+            /* //(works,turns a few times and stops at 90, infinate turns)
+            m_gyro.reset(),
+            if m_gyro.getAngle() == 90 {
+              Constants.AutoConstants.kAutoFarTrenchTurnStop,
+            }else{
+              m_gyro.getAngle()
+            Constants.AutoConstants.kAutoFarTrenchTurn,
+            Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
+            }
+
+            */
             ),
           new DriveDistance(                                //Drive 30 Inches
           Constants.AutoConstants.kAutoFarTrenchDistance,
@@ -53,7 +66,6 @@ public class AutoFarTrench extends SequentialCommandGroup {
             drive),
           new DriveTurn(                                    //Turn 90 Degrees
           m_gyro.reset(),
-          m_gyro.getAngle(),
           while m_gyro.getAngle() != 88||89||90|91||92 {
             Constants.AutoConstants.kAutoFarTrenchTurn,
           Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
