@@ -35,24 +35,33 @@ public class AutoFarTrench extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SequentialCommandGroup(
           new DriveDistance(                                //Drive 30 Inches
-            Constants.AutoConstants.kAutoFarTrenchReverseDistance,
-            Constants.AutoConstants.kAutoFarTrenchReverseSpeed,
+            Constants.AutoConstants.kAutoFarTrenchDistance,
+            Constants.AutoConstants.kAutoFarTrenchSpeed,
             drive),
           new DriveTurn(                                    //Turn 90 Degrees
-            Constants.AutoConstants.kAutoFarTrenchTurn, 
+            m_gyro.reset(),
+            m_gyro.getAngle(),
+            while m_gyro.getAngle() != 88||89||90|91||92 {
+              Constants.AutoConstants.kAutoFarTrenchTurn,
             Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
-            drive),
+            } 
+            m_gyro.reset(),
+            ),
           new DriveDistance(                                //Drive 30 Inches
-            Constants.AutoConstants.kAutoFarTrenchReverseDistance,
-            Constants.AutoConstants.kAutoFarTrenchReverseSpeed,
+          Constants.AutoConstants.kAutoFarTrenchDistance,
+          Constants.AutoConstants.kAutoFarTrenchSpeed,
             drive),
           new DriveTurn(                                    //Turn 90 Degrees
+          m_gyro.reset(),
+          m_gyro.getAngle(),
+          while m_gyro.getAngle() != 88||89||90|91||92 {
             Constants.AutoConstants.kAutoFarTrenchTurn,
-            Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
-            drive),
+          Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
+          } 
+          m_gyro.reset(),
+            ),
           new DriveDistance(                                //Drive 30 Inches
-            Constants.AutoConstants.kAutoFarTrenchReverseDistance,
-            Constants.AutoConstants.kAutoFarTrenchReverseSpeed,
+
             drive)
         )
       )
