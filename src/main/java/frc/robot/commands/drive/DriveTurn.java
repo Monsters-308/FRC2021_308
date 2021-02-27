@@ -8,7 +8,8 @@ public class DriveTurn extends CommandBase {
   private final DriveSubsystem m_drive;
   private final double m_heading;
   private final double m_speed;
-  private final double m_headingError = 0.1;
+  private double m_speed2;
+  private final double m_headingError =1.5;
 
   /**
    * Creates a new DriveDistance.
@@ -27,12 +28,13 @@ public class DriveTurn extends CommandBase {
   public void initialize() {
     m_drive.resetEncoders();
     m_drive.resetGyro();
-    m_drive.arcadeDrive(0.0, m_speed);
   }
 
   @Override
   public void end(boolean interrupted) {
     m_drive.arcadeDrive(0, 0);
+    m_drive.resetGyro();
+    m_drive.resetEncoders();
   }
 
   @Override
@@ -40,9 +42,24 @@ public class DriveTurn extends CommandBase {
       if(m_drive.getGyroHeading() > m_heading - m_headingError && m_drive.getGyroHeading() < m_heading + m_headingError){
           return true;
       }else{
-        m_drive.arcadeDrive(0.0, m_speed);
+        if(Math.abs(m_drive.getGyroHeading()) < Math.abs(m_heading)){
+          m_speed2 = (Math.abs(m_heading-m_drive.getGyroHeading()/m_heading));
+          if(m_speed < 0){
+            m_speed2 = -m_speed2;
+          }
+            if(m_speed2 > m_speed){
+              m_speed2 = m_speed;
+            }
+          
+          else if(m_speed2 < m_speed){
+            m_speed2 = m_speed;
+          }
+        }
+        m_drive.arcadeDrive(0.0, m_speed2);
         return false;
+        
       }
 
   }
-}
+  }
+

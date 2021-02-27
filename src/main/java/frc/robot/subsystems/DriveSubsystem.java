@@ -14,13 +14,14 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
 
 public class DriveSubsystem extends SubsystemBase {
   // The motors on the left side of the drive.
-  private final CANSparkMax m_leftFront = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
-  private final CANSparkMax m_leftRear = new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless);
+  public final CANSparkMax m_leftFront = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
+  public final CANSparkMax m_leftRear = new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless);
   // The motors on the right side of the drive.
   private final CANSparkMax m_rightFront = new CANSparkMax(DriveConstants.kRightMotor1Port, MotorType.kBrushless);
   private final CANSparkMax m_rightRear = new CANSparkMax(DriveConstants.kRightMotor2Port, MotorType.kBrushless);
@@ -94,6 +95,21 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setPosition(0.0);
     m_rightEncoder.setPosition(0.0);
   }
+
+  public void brakeMode(boolean mode){
+    if(mode == true){
+      m_leftFront.setIdleMode(IdleMode.kCoast);
+      m_leftRear.setIdleMode(IdleMode.kCoast);
+      m_rightFront.setIdleMode(IdleMode.kCoast);
+      m_rightRear.setIdleMode(IdleMode.kCoast);
+    }
+    else{
+      m_leftFront.setIdleMode(IdleMode.kCoast);
+      m_leftRear.setIdleMode(IdleMode.kCoast);
+      m_rightFront.setIdleMode(IdleMode.kCoast);
+      m_rightRear.setIdleMode(IdleMode.kCoast);
+    }
+   }
 
   /**
    * Gets the average distance of the TWO encoders.

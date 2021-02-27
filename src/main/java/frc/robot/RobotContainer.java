@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.auto.AutoFarTrench;
 import frc.robot.commands.auto.AutoNearTrench;
+import frc.robot.commands.auto.AutoTest;
+import frc.robot.commands.auto.BounceAuton;
 import frc.robot.commands.auto.ComplexAuto;
 import frc.robot.commands.auto.ComplexAutoLeft;
 import frc.robot.commands.drive.DefaultDrive;
@@ -66,19 +68,14 @@ public class RobotContainer {
   private final LiftTraverseSubsystem m_liftTraverse = new LiftTraverseSubsystem();
   // The autonomous routines
 
-  // A simple auto routine that drives forward a specified distance, and then stops.
-  private final Command m_simpleAuto =
-      new DriveDistance(
-        Constants.AutoConstants.kAutoDriveOffLineDistance,
-        Constants.AutoConstants.kAutoDriveOffLineSpeed,
-        m_robotDrive);
 
   // A complex auto routine that drives forward, extends intake, and then drives backward.
-  private final Command m_complexAutoLeft = new ComplexAutoLeft(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
-  private final Command m_complexAutoRight = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
-  private final Command m_autoNearTrench = new AutoNearTrench(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
-  private final Command m_autoFarTrench = new AutoFarTrench(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
-
+  // private final Command m_complexAutoLeft = new ComplexAutoLeft(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
+  // private final Command m_complexAutoRight = new ComplexAuto(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem);
+  // private final Command m_autoNearTrench = new AutoNearTrench(m_robotDrive, m_indexerSubsystem, m_shooterSubsystem,m_intakeSubsystem,m_hopperSubsystem);
+  // private final Command m_autoFarTrench = new AutoFarTrench(m_robotDrive);
+  private final Command m_autoTest = new AutoTest(m_robotDrive);
+  private final Command m_bounceAuton = new BounceAuton(m_robotDrive);
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -111,11 +108,12 @@ public class RobotContainer {
     () -> m_coDriverController.getY(GenericHID.Hand.kLeft),
     () -> m_coDriverController.getX(GenericHID.Hand.kRight)));
 
-m_chooser.addOption("Move Off Line", m_simpleAuto);
-    m_chooser.addOption("Shoot Straight(right)", m_complexAutoRight);
-    m_chooser.addOption("Near Trench", m_autoNearTrench);
-    m_chooser.addOption("Far Trench", m_autoFarTrench);
-    m_chooser.addOption("Shoot Straight(left)", m_complexAutoLeft);
+    m_chooser.addOption("Bounce Auton", m_bounceAuton);
+   // m_chooser.addOption("Move Off Line", m_simpleAuto);
+    m_chooser.addOption("TEST AUTO", m_autoTest);
+    // m_chooser.addOption("Near Trench", m_autoNearTrench);
+    // m_chooser.addOption("Far Trench", m_autoFarTrench);
+    // m_chooser.addOption("Shoot Straight(left)", m_complexAutoLeft);
 
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Autonomous").add(m_chooser);

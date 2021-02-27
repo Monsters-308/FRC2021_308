@@ -31,6 +31,12 @@ public class DefaultDrive extends CommandBase {
   }
 
   @Override
+  public void initialize() {
+    m_drive.brakeMode(false);
+  }
+
+
+  @Override
   public void execute() {
     m_drive.arcadeDrive(m_forward.getAsDouble()*-1.0, m_rotation.getAsDouble()*1.0);
   }
