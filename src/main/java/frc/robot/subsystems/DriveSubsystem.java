@@ -24,10 +24,10 @@ public class DriveSubsystem extends SubsystemBase {
   // The motors on the right side of the drive.
   private final CANSparkMax m_rightFront = new CANSparkMax(DriveConstants.kRightMotor1Port, MotorType.kBrushless);
   private final CANSparkMax m_rightRear = new CANSparkMax(DriveConstants.kRightMotor2Port, MotorType.kBrushless);
+  
+  private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(m_leftFront,m_leftRear);
 
-  private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(m_leftFront, m_leftRear);
-
-  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(m_rightFront, m_rightRear);
+  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(m_rightFront,m_rightRear);
 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
@@ -41,15 +41,14 @@ public class DriveSubsystem extends SubsystemBase {
   // The Gyro
   private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
-  private final Solenoid m_visionSolenoid = new Solenoid(Constants.DriveConstants.kLEDRingModule,
-      Constants.DriveConstants.kLEDRingPort);
+  private final Solenoid m_visionSolenoid = new Solenoid(Constants.DriveConstants.kLEDRingModule,Constants.DriveConstants.kLEDRingPort);
 
   private final NetworkTable m_visionTable;
   private final NetworkTableEntry m_visionYaw;
   private final NetworkTableEntry m_isDriverMode;
   private final NetworkTableEntry m_isValid;
   private final NetworkTableEntry m_pose;
-
+ 
   /**
    * Creates a new DriveSubsystem.
    */
@@ -74,7 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_isValid = m_visionTable.getEntry("is_Valid");
     m_pose = m_visionTable.getEntry("poseList");
 
-    m_isDriverMode.setBoolean(false);// set the driver mode
+    m_isDriverMode.setBoolean(false);//set the driver mode
     m_gyro.calibrate();
   }
 
@@ -86,10 +85,6 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void arcadeDrive(double fwd, double rot) {
     m_drive.arcadeDrive(fwd, rot);
-  }
-
-  public void tankDrive(double leftSpeed, double rightSpeed) {
-    m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 
   /**
@@ -106,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the TWO encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getPosition() + ((-1.0) * m_rightEncoder.getPosition())) / 2.0;
+    return (m_leftEncoder.getPosition() + ((-1.0)*m_rightEncoder.getPosition())) / 2.0;
   }
 
   /**
@@ -128,8 +123,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Sets the max output of the drive. Useful for scaling the drive to drive more
-   * slowly.
+   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
    *
    * @param maxOutput the maximum output to which the drive will be constrained
    */
@@ -137,51 +131,52 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.setMaxOutput(maxOutput);
   }
 
-  public void setLedState(boolean state) {
+  public void setLedState(boolean state){
     m_visionSolenoid.set(state);
   }
 
-  public double getVisionYaw() {
+  public double getVisionYaw(){
     return m_visionYaw.getDouble(0.0);
   }
 
-  public boolean isValid() {
+  public boolean isValid(){
     return m_isValid.getBoolean(false);
   }
 
-  public double getVisonPose() {
-    double[] retval = { 0.0, 0.0, 0, 0 };
+  public double getVisonPose(){
+    double[] retval = {0.0,0.0,0,0};
     retval = m_pose.getDoubleArray(retval);
     return retval[0];
   }
 
-  public void setDriverMode(boolean state) {
+  public void setDriverMode(boolean state){
     m_isDriverMode.setBoolean(state);
   }
 
-  public double getGyroHeading() {
+  public double getGyroHeading(){
     return m_gyro.getAngle();
   }
 
-  public void resetGyro() {
+  public void resetGyro(){
     m_gyro.reset();
   }
 
   @Override
-  public void periodic() {
+  public void periodic(){
     // here is a place to send to the smartdashboard
-    SmartDashboard.putNumber("LeftEncoder", m_leftEncoder.getPosition());
-    SmartDashboard.putNumber("LeftVelocity", m_leftEncoder.getVelocity());
-    SmartDashboard.putNumber("RightEncoder", -1.0 * m_rightEncoder.getPosition());
-    SmartDashboard.putNumber("RightVelocity", m_rightEncoder.getVelocity());
-    SmartDashboard.putNumber("RightSpeed", m_rightFront.get());
-    SmartDashboard.putNumber("LeftSpeed", m_leftFront.get());
+    SmartDashboard.putNumber("LeftEncoder",m_leftEncoder.getPosition());
+    SmartDashboard.putNumber("LeftVelocity",m_leftEncoder.getVelocity());
+    SmartDashboard.putNumber("RightEncoder",-1.0*m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("RightVelocity",m_rightEncoder.getVelocity());
+    SmartDashboard.putNumber("RightSpeed",m_rightFront.get());
+    SmartDashboard.putNumber("LeftSpeed",m_leftFront.get());
 
-    SmartDashboard.putNumber("VisionYaw", m_visionYaw.getDouble(0.0));
-    SmartDashboard.putBoolean("VisionValid", m_isValid.getBoolean(false));
-    SmartDashboard.putNumber("VisionPose", getVisonPose());
-
-    SmartDashboard.putNumber("GyroHeading", m_gyro.getAngle());
+    SmartDashboard.putNumber("VisionYaw",m_visionYaw.getDouble(0.0));
+    SmartDashboard.putBoolean("VisionValid",m_isValid.getBoolean(false));
+    SmartDashboard.putNumber("VisionPose",getVisonPose());
+    
+    SmartDashboard.putNumber("GyroHeading",m_gyro.getAngle());
   }
+
 
 }
