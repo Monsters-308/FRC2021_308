@@ -74,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_isValid = m_visionTable.getEntry("is_Valid");
     m_pose = m_visionTable.getEntry("poseList");
 
-    m_isDriverMode.setBoolean(false);//set the driver mode
+    //m_isDriverMode.setBoolean(false);//set the driver mode
     m_gyro.calibrate();
   }
 
@@ -96,7 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoder.setPosition(0.0);
   }
 
-  public void brakeMode(boolean mode){
+ /* public void brakeMode(boolean mode){
     if(mode == true){
       m_leftFront.setIdleMode(IdleMode.kCoast);
       m_leftRear.setIdleMode(IdleMode.kCoast);
@@ -110,7 +110,7 @@ public class DriveSubsystem extends SubsystemBase {
       m_rightRear.setIdleMode(IdleMode.kCoast);
     }
    }
-
+*/
   /**
    * Gets the average distance of the TWO encoders.
    *

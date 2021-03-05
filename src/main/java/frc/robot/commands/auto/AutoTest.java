@@ -7,7 +7,7 @@ import frc.robot.Constants;
 import frc.robot.commands.drive.DriveAimStop;
 import frc.robot.commands.drive.DriveDistance;
 import frc.robot.commands.drive.DriveTurn;
-import frc.robot.commands.drive.DriveWideTurn;
+//import frc.robot.commands.drive.DriveWideTurn;
 import frc.robot.commands.hopper.ForwardHopper;
 import frc.robot.commands.indexer.ForwardIndexer;
 import frc.robot.commands.intake.ForwardIntake;
@@ -28,13 +28,13 @@ public class AutoTest extends SequentialCommandGroup {
     addCommands(
           new SequentialCommandGroup
           (
-            new DriveDistance(20.0,0.3,true,drive),
+            new DriveDistance(20.0,0.3,drive),
             new DriveTurn(90,0.4, drive),
-            new DriveDistance(20.0,0.3,true,drive),
+            new DriveDistance(20.0,0.3,drive),
             new DriveTurn(90,0.4, drive),
-            new DriveDistance(20.0,0.3,true,drive),
+            new DriveDistance(20.0,0.3,drive),
             new DriveTurn(90,0.4, drive),
-            new DriveDistance(20.0,0.3,true,drive),
+            new DriveDistance(20.0,0.3,drive),
             new DriveTurn(90,0.4 , drive) 
           )
               

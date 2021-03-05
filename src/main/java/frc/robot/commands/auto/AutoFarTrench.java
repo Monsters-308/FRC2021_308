@@ -52,7 +52,7 @@ public class AutoFarTrench extends SequentialCommandGroup {
             new WaitCommand(Constants.AutoConstants.kAutoFarTrenchWait),
             new DriveTurn(
               Constants.AutoConstants.kAutoFarTrenchTurn,
-              Constants.AutoConstants.kAutoFarTrenchTurnSpeed,
+              Constants.AutoConstants.kAutoFarTrenchSpeed,
               drive),
             new DriveDistance(
               Constants.AutoConstants.kAutoFarTrenchReverseDistance,

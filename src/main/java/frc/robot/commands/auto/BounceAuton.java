@@ -39,7 +39,6 @@ private static final double BounceTurnSpeed = 0.5;
             new DriveDistance(                             
               28, 
               BounceSpeed,
-              true,
               drive),
             new DriveTurn(                             
               -99, 
@@ -48,12 +47,10 @@ private static final double BounceTurnSpeed = 0.5;
             new DriveDistance(               
               30,
               BounceSpeed,
-              true,
               drive),
             new DriveDistance(               
                 75,
                 BounceSpeed * -1,
-                true,
                 drive),
             new DriveTurn(                             
                 -60, 
@@ -62,7 +59,6 @@ private static final double BounceTurnSpeed = 0.5;
             new DriveDistance(               
                 35,
                 BounceSpeed * -1,
-                true,
                 drive),
             new DriveTurn(                             
                 -55, 
@@ -71,12 +67,10 @@ private static final double BounceTurnSpeed = 0.5;
             new DriveDistance(               
                   75,
                   BounceSpeed * -1,
-                  true,
                   drive),
             new DriveDistance(               
                   75,
                   BounceSpeed,
-                  true,
                   drive),
             new DriveTurn(                             
                 -90, 
@@ -85,7 +79,6 @@ private static final double BounceTurnSpeed = 0.5;
             new DriveDistance(               
                 30,
                 BounceSpeed,
-                true,
                 drive),
             new DriveTurn(                             
                 -85, 
@@ -94,12 +87,10 @@ private static final double BounceTurnSpeed = 0.5;
             new DriveDistance(               
                   75,
                   BounceSpeed,
-                  true,
                   drive),
             new DriveDistance(               
                     35,
                     BounceSpeed*-1,
-                    true,
                     drive),
             new DriveTurn(                             
                       -85, 
@@ -108,12 +99,10 @@ private static final double BounceTurnSpeed = 0.5;
             new DriveDistance(               
                     35,
                     BounceSpeed*-1,
-                    true,
                     drive),
             new DriveDistance(
               0,
               BounceSpeed,
-              false, 
               drive)
               
           )

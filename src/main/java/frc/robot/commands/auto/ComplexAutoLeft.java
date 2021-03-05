@@ -28,7 +28,7 @@ public class ComplexAutoLeft extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new ParallelCommandGroup(
             new ShootSpeed(shooter, ShooterConstants.kShortShotRPM),
-            new DriveDistance(AutoConstants.kAutoStraightDistance, AutoConstants.kAutoStraightSpeed, true, drive),
+            new DriveDistance(AutoConstants.kAutoStraightDistance, AutoConstants.kAutoStraightSpeed, drive),
             new DriveAimStopLeft(drive)
           ),
         new ForwardIndexer(indexer)

@@ -32,7 +32,7 @@ public class DefaultDrive extends CommandBase {
 
   @Override
   public void initialize() {
-    m_drive.brakeMode(false);
+   // m_drive.brakeMode(false);
   }
 
 

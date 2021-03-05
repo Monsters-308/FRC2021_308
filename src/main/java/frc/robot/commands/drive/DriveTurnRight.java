@@ -28,12 +28,12 @@ public class DriveTurnRight extends CommandBase {
   public void initialize() {
     m_drive.resetEncoders();
     m_drive.resetGyro();
-    m_drive.tankDrive(m_leftSpeed, m_rightSpeed);
+    //m_drive.tankDrive(m_leftSpeed, m_rightSpeed);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_drive.tankDrive(0, 0);
+  //m_drive.tankDrive(0, 0);
   }
 
   @Override
@@ -42,7 +42,7 @@ public class DriveTurnRight extends CommandBase {
         && m_drive.getGyroHeading() < m_heading + m_headingError) {
       return true;
     } else {
-      m_drive.tankDrive(m_leftSpeed, m_rightSpeed);
+     // m_drive.tankDrive(m_leftSpeed, m_rightSpeed);
       return false;
     }
 

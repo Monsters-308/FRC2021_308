@@ -35,7 +35,6 @@ public class ComplexAuto extends SequentialCommandGroup {
         new DriveDistance(
           Constants.AutoConstants.kAutoStraightDistance, 
           Constants.AutoConstants.kAutoStraightSpeed,
-          true,
            drive)
         )
       );
